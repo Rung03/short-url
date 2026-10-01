@@ -6,8 +6,10 @@ import CopyButton from '../components/CopyButton.jsx'
 import { Breakdown, DailyChart, KpiTile } from '../components/Charts.jsx'
 import { deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
 
-function Dashboard({ summary }) {
-  if (!summary) return null
+function Dashboard({ summary: raw }) {
+  if (!raw) return null
+  // Default the lists so an older API response can't crash the page
+  const summary = { daily: [], devices: [], referrers: [], topLinks: [], uniqueVisitors: 0, ...raw }
   const last14 = summary.daily.reduce((sum, d) => sum + d.clicks, 0)
 
   return (
