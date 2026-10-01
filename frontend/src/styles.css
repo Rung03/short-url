@@ -210,36 +210,6 @@ a:hover {
   margin: 0 auto;
   font-size: 16px;
 }
-.steps {
-  list-style: none;
-  counter-reset: step;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px 20px;
-  margin: 10px 0 0;
-  padding: 0;
-  font-size: 14px;
-  color: var(--text-muted);
-}
-.steps li {
-  counter-increment: step;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.steps li::before {
-  content: counter(step);
-  display: grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 600;
-}
 
 .page-head {
   display: flex;
