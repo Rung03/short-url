@@ -49,9 +49,9 @@ export default function App() {
           </Link>
           {user && (
             <nav className="nav">
-              <NavLink to="/" end>ย่อลิงก์</NavLink>
-              <NavLink to="/history">{isAdmin ? 'รายงานทั้งระบบ' : 'ประวัติและรายงาน'}</NavLink>
-              {isAdmin && <NavLink to="/users">ผู้ใช้</NavLink>}
+              <NavLink to="/" end>Shorten</NavLink>
+              <NavLink to="/history">Dashboard</NavLink>
+              {isAdmin && <NavLink to="/users">Users</NavLink>}
             </nav>
           )}
           <UserMenu />
