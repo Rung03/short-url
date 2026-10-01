@@ -21,8 +21,8 @@
 
 | | ลิงก์ |
 |---|---|
-| เว็บไซต์ | `https://ใส่ลิงก์-vercel` |
-| API | `https://ใส่ลิงก์-render` |
+| เว็บไซต์ | https://short-url-inky-eight.vercel.app |
+| API | https://short-url-api-mpst.onrender.com/api/health |
 | Username / Password | ไม่ต้องใช้ |
 
 > เซิร์ฟเวอร์ API ใช้ Render แบบฟรี หากไม่มีการใช้งานนาน การเปิดครั้งแรกอาจใช้เวลา 30–50 วินาที
