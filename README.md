@@ -50,6 +50,8 @@
 
 ## สถาปัตยกรรมระบบ
 
+![Short URL System Architecture](docs/architecture.svg)
+
 ```mermaid
 flowchart LR
     U[ผู้ใช้งาน<br/>เบราว์เซอร์] --> FE[React + Vite<br/>Vercel]
