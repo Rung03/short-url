@@ -1,13 +1,15 @@
 # Render Blueprint: New > Blueprint > select this repository
 services:
   - type: web
-    name: short-url-api
+    name: srtl # becomes https://srtl.onrender.com (Render adds a suffix if the name is taken)
     runtime: node
     plan: free
+    region: singapore # same region as the Neon database, closest to Thailand
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: NODE_VERSION
         value: "22"
@@ -17,7 +19,7 @@ services:
         value: "true"
       # BASE_URL defaults to RENDER_EXTERNAL_URL (https://<service>.onrender.com)
       - key: CORS_ORIGIN
-        value: "*" # after the frontend is live, change to https://<frontend>.vercel.app
+        value: https://short-url-inky-eight.vercel.app
       - key: IP_SALT
         generateValue: true
       - key: STATS_TIMEZONE
