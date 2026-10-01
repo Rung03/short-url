@@ -1,7 +1,7 @@
 # Render Blueprint: New > Blueprint > select this repository
 services:
   - type: web
-    name: srtl # becomes https://srtl.onrender.com (Render adds a suffix if the name is taken)
+    name: sual # becomes https://sual.onrender.com (Render adds a suffix if the name is taken)
     runtime: node
     plan: free
     region: singapore # same region as the Neon database, closest to Thailand
