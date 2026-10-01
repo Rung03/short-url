@@ -26,7 +26,7 @@ export default function App() {
           </Link>
           <nav className="nav">
             <NavLink to="/" end>ย่อลิงก์</NavLink>
-            <NavLink to="/history">ประวัติ</NavLink>
+            <NavLink to="/history">ประวัติและรายงาน</NavLink>
           </nav>
         </div>
       </header>

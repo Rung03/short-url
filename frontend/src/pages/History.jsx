@@ -5,11 +5,42 @@ import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import { formatDateTime, formatNumber } from '../format.js'
 
+function Summary({ summary }) {
+  if (!summary) return null
+  return (
+    <section className="stat-grid" aria-label="ภาพรวมระบบ">
+      <div className="stat-tile">
+        <span>ลิงก์ทั้งหมด</span>
+        <strong>{formatNumber(summary.totalLinks)}</strong>
+      </div>
+      <div className="stat-tile">
+        <span>ลิงก์ที่ใช้งานได้</span>
+        <strong>{formatNumber(summary.activeLinks)}</strong>
+      </div>
+      <div className="stat-tile">
+        <span>การเปิดทั้งหมด</span>
+        <strong>{formatNumber(summary.totalClicks)}</strong>
+      </div>
+      <div className="stat-tile">
+        <span>เปิดวันนี้</span>
+        <strong>{formatNumber(summary.clicksToday)}</strong>
+      </div>
+    </section>
+  )
+}
+
 export default function History() {
   const [search, setSearch] = useState('')
   const [links, setLinks] = useState(null)
+  const [summary, setSummary] = useState(null)
   const [error, setError] = useState('')
   const [busyId, setBusyId] = useState(null)
+
+  const loadSummary = () => api.getSummary().then(setSummary).catch(() => {})
+
+  useEffect(() => {
+    loadSummary()
+  }, [])
 
   // Debounce typing so each keystroke doesn't hit the API
   useEffect(() => {
@@ -31,6 +62,7 @@ export default function History() {
     try {
       const updated = await api.setActive(link.id, !link.isActive)
       setLinks((list) => list.map((l) => (l.id === updated.id ? updated : l)))
+      loadSummary()
     } catch (err) {
       alert(err.message)
     } finally {
@@ -44,6 +76,7 @@ export default function History() {
     try {
       await api.deleteUrl(link.id)
       setLinks((list) => list.filter((l) => l.id !== link.id))
+      loadSummary()
     } catch (err) {
       alert(err.message)
     } finally {
@@ -54,7 +87,7 @@ export default function History() {
   return (
     <>
       <div className="page-head">
-        <h1>ประวัติลิงก์</h1>
+        <h1>ประวัติและรายงาน</h1>
         <input
           className="input search"
           type="search"
@@ -64,6 +97,8 @@ export default function History() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+
+      <Summary summary={summary} />
 
       {error && <p className="form-error" role="alert">{error}</p>}
       {!links && !error && <p className="muted">กำลังโหลด…</p>}

@@ -1,8 +1,9 @@
+/* Always light theme, regardless of the OS dark mode setting */
 :root {
-  --bg: #f5f6f8;
+  --bg: #fafbfc;
   --surface: #ffffff;
-  --surface-2: #f0f2f5;
-  --border: #e3e6eb;
+  --surface-2: #f3f5f8;
+  --border: #e6e9ee;
   --text: #171c26;
   --text-muted: #626b7c;
   --accent: #2f5bea;
@@ -22,30 +23,6 @@
   --font: 'IBM Plex Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: ui-monospace, 'SFMono-Regular', 'Cascadia Code', Consolas, monospace;
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1218;
-    --surface: #171b23;
-    --surface-2: #1e232d;
-    --border: #2a303c;
-    --text: #e7eaf0;
-    --text-muted: #98a1b2;
-    --accent: #6b8cff;
-    --accent-hover: #87a2ff;
-    --accent-soft: rgba(107, 140, 255, 0.14);
-    --accent-text: #0b1020;
-    --success: #4cc787;
-    --success-soft: rgba(76, 199, 135, 0.14);
-    --warning: #f0b45a;
-    --warning-soft: rgba(240, 180, 90, 0.14);
-    --danger: #ff7a7e;
-    --danger-soft: rgba(255, 122, 126, 0.14);
-    --neutral-soft: #262c37;
-    --shadow: none;
-    color-scheme: dark;
-  }
 }
 
 *,
@@ -439,33 +416,6 @@ a:hover {
   font-size: 15px;
   font-weight: 500;
   padding-top: 8px;
-}
-
-/* Recent list */
-.recent-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.recent-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 0;
-  border-top: 1px solid var(--border);
-}
-.recent-list li:first-child {
-  border-top: 0;
-}
-.recent-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.recent-count {
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Badges */

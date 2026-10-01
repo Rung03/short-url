@@ -13,7 +13,6 @@ function messagePage(title, message) {
 <style>
   body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,sans-serif;background:#f6f7f9;color:#1d2433}
   main{text-align:center;padding:24px}h1{font-size:22px;margin:0 0 8px}p{margin:0;color:#5b6475}
-  @media (prefers-color-scheme:dark){body{background:#12151c;color:#e6e9ef}p{color:#9aa3b2}}
 </style></head>
 <body><main><h1>${title}</h1><p>${message}</p></main></body></html>`;
 }
