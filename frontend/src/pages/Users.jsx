@@ -54,6 +54,15 @@ export default function Users() {
     })
   }
 
+  const removeUser = (target) => {
+    const links = target.linkCount ? `\nลิงก์ ${target.linkCount} อันของผู้ใช้นี้และสถิติทั้งหมดจะถูกลบด้วย` : ''
+    if (!confirm(`ลบผู้ใช้ ${target.username}?${links}\nการลบไม่สามารถย้อนกลับได้`)) return
+    run(target, async () => {
+      await api.deleteUser(target.id)
+      setUsers((list) => list.filter((u) => u.id !== target.id))
+    })
+  }
+
   const term = search.trim().toLowerCase()
   const shown = users?.filter((u) => u.username.includes(term)) ?? []
 
@@ -109,6 +118,9 @@ export default function Users() {
                           </button>
                           <button className="btn btn-sm btn-ghost" disabled={busyId === u.id} onClick={() => resetPassword(u)}>
                             รีเซ็ตรหัสผ่าน
+                          </button>
+                          <button className="btn btn-sm btn-danger" disabled={busyId === u.id} onClick={() => removeUser(u)}>
+                            ลบ
                           </button>
                         </>
                       )}

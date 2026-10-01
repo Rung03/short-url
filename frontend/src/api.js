@@ -72,4 +72,5 @@ export const api = {
   listUsers: () => request('/api/users'),
   setRole: (id, role) => request(`/api/users/${id}`, patch({ role })),
   resetPassword: (id, password) => request(`/api/users/${id}/password`, post({ password })),
+  deleteUser: (id) => request(`/api/users/${id}`, { method: 'DELETE' }),
 }
