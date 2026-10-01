@@ -1,0 +1,93 @@
+import { useState } from 'react'
+import { api } from '../api.js'
+
+const EMPTY = { url: '', title: '', customCode: '', expiresAt: '' }
+
+export default function UrlForm({ onCreated }) {
+  const [form, setForm] = useState(EMPTY)
+  const [showOptions, setShowOptions] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const update = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      const link = await api.createUrl({
+        url: form.url,
+        title: form.title || undefined,
+        customCode: form.customCode || undefined,
+        // datetime-local is local time; send it as an absolute ISO timestamp
+        expiresAt: form.expiresAt ? new Date(form.expiresAt).toISOString() : undefined,
+      })
+      setForm(EMPTY)
+      onCreated?.(link)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <form className="url-form card" onSubmit={submit} noValidate>
+      <label className="sr-only" htmlFor="url-input">URL ที่ต้องการย่อ</label>
+      <div className="url-form-row">
+        <input
+          id="url-input"
+          className="input input-lg"
+          type="text"
+          inputMode="url"
+          autoComplete="url"
+          placeholder="วางลิงก์ยาวๆ ที่นี่ เช่น https://www.example.com/..."
+          value={form.url}
+          onChange={update('url')}
+          required
+        />
+        <button className="btn btn-primary btn-lg" type="submit" disabled={loading || !form.url.trim()}>
+          {loading ? 'กำลังย่อ…' : 'ย่อลิงก์'}
+        </button>
+      </div>
+
+      <button
+        type="button"
+        className="link-button"
+        aria-expanded={showOptions}
+        onClick={() => setShowOptions((v) => !v)}
+      >
+        {showOptions ? '− ซ่อนตัวเลือกเพิ่มเติม' : '+ ตัวเลือกเพิ่มเติม'}
+      </button>
+
+      {showOptions && (
+        <div className="url-form-options">
+          <label className="field">
+            <span>ชื่อลิงก์ (ไม่บังคับ)</span>
+            <input className="input" type="text" maxLength={255} value={form.title} onChange={update('title')} />
+          </label>
+          <label className="field">
+            <span>ตั้งรหัสเอง (ไม่บังคับ)</span>
+            <input
+              className="input"
+              type="text"
+              placeholder="เช่น promo-2026"
+              maxLength={20}
+              pattern="[A-Za-z0-9_\-]{3,20}"
+              value={form.customCode}
+              onChange={update('customCode')}
+            />
+            <small>a-z, A-Z, 0-9, - และ _ ยาว 3-20 ตัว</small>
+          </label>
+          <label className="field">
+            <span>วันหมดอายุ (ไม่บังคับ)</span>
+            <input className="input" type="datetime-local" value={form.expiresAt} onChange={update('expiresAt')} />
+          </label>
+        </div>
+      )}
+
+      {error && <p className="form-error" role="alert">{error}</p>}
+    </form>
+  )
+}
