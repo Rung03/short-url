@@ -24,12 +24,9 @@ function UserMenu() {
   if (!user) return null
   return (
     <div className="user-menu">
-      <span className="user-name" title={user.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ผู้ใช้'}>
-        {user.username}
-        {user.role === 'admin' && <span className="badge badge-admin">admin</span>}
-      </span>
+      <span className="user-name">{user.username}</span>
       <button type="button" className="btn btn-sm btn-secondary" onClick={logout}>
-        ออกจากระบบ
+        Logout
       </button>
     </div>
   )

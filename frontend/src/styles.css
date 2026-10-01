@@ -139,9 +139,6 @@ a:hover {
   border-left: 1px solid var(--border);
 }
 .user-name {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   font-weight: 500;
   font-size: 14px;
 }

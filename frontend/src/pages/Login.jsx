@@ -45,15 +45,15 @@ export default function Login() {
       <form className="card auth-card" onSubmit={submit} noValidate>
         <div className="auth-tabs" role="tablist">
           <button type="button" role="tab" aria-selected={!isRegister} className={!isRegister ? 'active' : ''} onClick={() => switchMode('login')}>
-            เข้าสู่ระบบ
+            Login
           </button>
           <button type="button" role="tab" aria-selected={isRegister} className={isRegister ? 'active' : ''} onClick={() => switchMode('register')}>
-            สมัครสมาชิก
+            Register
           </button>
         </div>
 
         <label className="field">
-          <span>ชื่อผู้ใช้</span>
+          <span>Username</span>
           <input
             className="input"
             type="text"
@@ -69,7 +69,7 @@ export default function Login() {
         </label>
 
         <label className="field">
-          <span>รหัสผ่าน</span>
+          <span>Password</span>
           <input
             className="input"
             type="password"
@@ -84,7 +84,7 @@ export default function Login() {
 
         {isRegister && (
           <label className="field">
-            <span>ยืนยันรหัสผ่าน</span>
+            <span>Confirm password</span>
             <input
               className="input"
               type="password"
@@ -100,7 +100,7 @@ export default function Login() {
         {error && <p className="form-error" role="alert">{error}</p>}
 
         <button className="btn btn-primary btn-lg" type="submit" disabled={loading || !form.username || !form.password}>
-          {loading ? 'กำลังดำเนินการ…' : isRegister ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ'}
+          {loading ? 'กำลังดำเนินการ…' : isRegister ? 'Register' : 'Login'}
         </button>
 
         {!isRegister && <p className="muted auth-note">ลืมรหัสผ่าน? ติดต่อผู้ดูแลระบบเพื่อรีเซ็ต</p>}
