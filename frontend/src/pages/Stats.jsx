@@ -4,8 +4,8 @@ import { api } from '../api.js'
 import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import QrBlock from '../components/QrBlock.jsx'
-import { Breakdown, DailyChart, KpiTile } from '../components/Charts.jsx'
-import { deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
+import { DailyChart, DonutCard, KpiTile } from '../components/Charts.jsx'
+import { DEVICE_COLORS, deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
 
 export default function Stats() {
   const { id } = useParams()
@@ -94,8 +94,8 @@ export default function Stats() {
       </section>
 
       <div className="two-col">
-        <Breakdown title="อุปกรณ์" items={stats.devices} label={deviceLabel} total={stats.totalClicks} />
-        <Breakdown title="ที่มา" items={stats.referrers} label={referrerLabel} total={stats.totalClicks} />
+        <DonutCard title="อุปกรณ์" items={stats.devices} label={deviceLabel} colors={DEVICE_COLORS} />
+        <DonutCard title="ที่มา" items={stats.referrers} label={referrerLabel} />
       </div>
 
       <section className="card table-card">

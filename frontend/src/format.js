@@ -14,7 +14,19 @@ export const DEVICE_LABELS = {
   unknown: 'ไม่ทราบ',
 }
 
-export const deviceLabel = (type) => DEVICE_LABELS[type ?? 'unknown'] ?? type
+// Categorical chart colors, in the order they are handed out
+export const PALETTE = ['#2f5bea', '#14b8a6', '#f59e0b', '#ec4899', '#8b5cf6', '#94a3b8']
+
+// Devices keep the same color on every chart
+export const DEVICE_COLORS = {
+  mobile: PALETTE[0],
+  desktop: PALETTE[1],
+  tablet: PALETTE[2],
+  bot: PALETTE[4],
+  unknown: PALETTE[5],
+}
+
+export const deviceLabel =(type) => DEVICE_LABELS[type ?? 'unknown'] ?? type
 export const referrerLabel = (name) => (name === 'direct' ? 'เข้าตรง / สแกน QR' : name)
 
 export function hostOf(url) {

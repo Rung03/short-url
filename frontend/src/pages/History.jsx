@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import { api } from '../api.js'
 import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
-import { Breakdown, DailyChart, KpiTile } from '../components/Charts.jsx'
-import { deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
+import { DailyChart, DonutCard, KpiTile, TopLinksChart } from '../components/Charts.jsx'
+import { DEVICE_COLORS, deviceLabel, formatDateTime, formatNumber, referrerLabel } from '../format.js'
 
 function Dashboard({ summary: raw }) {
   if (!raw) return null
@@ -36,24 +36,14 @@ function Dashboard({ summary: raw }) {
           {summary.topLinks.length === 0 ? (
             <p className="muted">ยังไม่มีการเปิดลิงก์</p>
           ) : (
-            <ol className="top-links">
-              {summary.topLinks.map((link) => (
-                <li key={link.id}>
-                  <Link to={`/stats/${link.id}`} className="top-link">
-                    <span className="top-link-code">/{link.shortCode}</span>
-                    <span className="muted truncate">{link.title || hostOf(link.originalUrl)}</span>
-                  </Link>
-                  <strong>{formatNumber(link.clickCount)}</strong>
-                </li>
-              ))}
-            </ol>
+            <TopLinksChart links={summary.topLinks} />
           )}
         </section>
       </div>
 
       <div className="two-col">
-        <Breakdown title="อุปกรณ์" items={summary.devices} label={deviceLabel} total={summary.totalClicks} />
-        <Breakdown title="ที่มา" items={summary.referrers} label={referrerLabel} total={summary.totalClicks} />
+        <DonutCard title="อุปกรณ์" items={summary.devices} label={deviceLabel} colors={DEVICE_COLORS} />
+        <DonutCard title="ที่มา" items={summary.referrers} label={referrerLabel} />
       </div>
     </section>
   )

@@ -12,8 +12,7 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <h1>ย่อลิงก์ให้สั้น แชร์ง่าย</h1>
-        <p>สร้าง Short URL พร้อม QR Code ได้ทันที</p>
+        <h1>Short URL</h1>
       </section>
 
       <UrlForm onCreated={setCreated} />
