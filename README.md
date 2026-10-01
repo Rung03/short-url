@@ -23,7 +23,7 @@
 |---|---|
 | เว็บไซต์ | https://short-url-eight-amber.vercel.app |
 | API | https://sual-ajgc.onrender.com/api/health |
-| Username / Password | ไม่ต้องใช้ |
+| Username / Password | สมัครสมาชิกได้เองที่หน้าเว็บ (ผู้ใช้ทั่วไป) |
 
 > เซิร์ฟเวอร์ API ใช้ Render แบบฟรี หากไม่มีการใช้งานนาน การเปิดครั้งแรกอาจใช้เวลา 30–50 วินาที
 
@@ -31,6 +31,8 @@
 
 | ความสามารถ | รายละเอียด |
 |---|---|
+| บัญชีผู้ใช้ | สมัครและเข้าสู่ระบบด้วยชื่อผู้ใช้และรหัสผ่าน ผู้ใช้แต่ละคนเห็นเฉพาะลิงก์และรายงานของตัวเอง |
+| ผู้ดูแลระบบ (admin) | เห็นรายงานทั้งระบบหรือแยกรายผู้ใช้, จัดการลิงก์ทุกอัน, ตั้ง/ถอดสิทธิ์ admin, รีเซ็ตรหัสผ่านผู้ใช้ |
 | สร้าง Short URL | กรอก URL แล้วได้ลิงก์สั้นที่คลิกไปยัง URL ต้นฉบับได้จริง |
 | QR Code | สร้าง QR Code ของ Short URL สแกนแล้วไปยัง URL ต้นฉบับ ดาวน์โหลดเป็น PNG ได้ |
 | ประวัติลิงก์ | แสดง URL ที่กรอก, Short URL, จำนวนการเปิด และวันที่สร้าง ค้นหาได้ |
@@ -42,7 +44,7 @@
 | ส่วน | เทคโนโลยี |
 |---|---|
 | Frontend | React 19, Vite, React Router, qrcode.react, Recharts |
-| Backend | Node.js 18+, Express 5, nanoid |
+| Backend | Node.js 18+, Express 5, nanoid, bcryptjs, jsonwebtoken |
 | Database | PostgreSQL (เชื่อมต่อด้วย `pg`) |
 | Hosting | Vercel (Frontend), Render (Backend), Neon (Database) |
 
@@ -100,9 +102,18 @@ Context Diagram, Workflow และตารางข้อมูลเข้า
 
 ```mermaid
 erDiagram
+    USERS ||--o{ URLS : "สร้าง"
     URLS ||--o{ CLICKS : "ถูกเปิด"
+    USERS {
+        SERIAL id PK
+        VARCHAR(30) username UK "NOT NULL"
+        VARCHAR(100) password_hash "NOT NULL (bcrypt)"
+        VARCHAR(10) role "user | admin"
+        TIMESTAMPTZ created_at "DEFAULT now()"
+    }
     URLS {
         SERIAL id PK
+        INTEGER user_id FK "ON DELETE SET NULL"
         TEXT original_url "NOT NULL"
         VARCHAR(20) short_code UK "NOT NULL"
         BOOLEAN is_active "DEFAULT true"
@@ -122,10 +133,11 @@ erDiagram
 
 | ตาราง | หน้าที่ |
 |---|---|
-| `urls` | เก็บ URL ต้นฉบับคู่กับรหัสสั้น (`short_code` เป็น UNIQUE) |
+| `users` | บัญชีผู้ใช้ เก็บรหัสผ่านเป็น hash (bcrypt) ไม่เก็บรหัสผ่านจริง และสิทธิ์ `user` หรือ `admin` |
+| `urls` | เก็บ URL ต้นฉบับคู่กับรหัสสั้น (`short_code` เป็น UNIQUE) และเจ้าของลิงก์ (`user_id`) |
 | `clicks` | เก็บการเปิด Short URL หนึ่งแถวต่อหนึ่งครั้ง ใช้คำนวณสถิติ |
 
-ลิงก์ 1 อันถูกเปิดได้หลายครั้ง (1:N) ฐานข้อมูลออกแบบตามหลัก Normalization ถึง 3NF โดยไม่เก็บข้อมูลที่คำนวณได้ซ้ำ เช่น จำนวนการเปิด (นับจาก `clicks`) และรูป QR Code (สร้างจาก `short_code`) รายละเอียดการ Normalize และ Data Dictionary อยู่ที่ [docs/design.md](docs/design.md)
+ผู้ใช้ 1 คนสร้างได้หลายลิงก์ (1:N) และลิงก์ 1 อันถูกเปิดได้หลายครั้ง (1:N) ฐานข้อมูลออกแบบตามหลัก Normalization ถึง 3NF โดยไม่เก็บข้อมูลที่คำนวณได้ซ้ำ เช่น จำนวนการเปิด (นับจาก `clicks`) และรูป QR Code (สร้างจาก `short_code`) รายละเอียดการ Normalize และ Data Dictionary อยู่ที่ [docs/design.md](docs/design.md)
 
 ## โครงสร้างโปรเจกต์
 
@@ -133,19 +145,22 @@ erDiagram
 short-url/
 ├── backend/                     Node.js + Express
 │   ├── db/
-│   │   └── schema.sql           สร้างตาราง urls, clicks
+│   │   └── schema.sql           สร้างตาราง users, urls, clicks
 │   ├── scripts/init-db.js       สร้างฐานข้อมูลและรัน schema.sql
 │   ├── src/
-│   │   ├── index.js             เริ่มเซิร์ฟเวอร์
+│   │   ├── index.js             เริ่มเซิร์ฟเวอร์ สร้างตาราง และสร้าง admin หลัก
 │   │   ├── db.js                เชื่อมต่อ PostgreSQL
-│   │   ├── routes/urls.js       REST API
+│   │   ├── auth.js              hash รหัสผ่าน, ออก/ตรวจ token, ตรวจสิทธิ์
+│   │   ├── routes/auth.js       สมัคร / เข้าสู่ระบบ
+│   │   ├── routes/users.js      จัดการผู้ใช้ (admin)
+│   │   ├── routes/urls.js       ลิงก์และรายงาน (กรองตามเจ้าของ)
 │   │   ├── routes/redirect.js   GET /:code → บันทึกการเปิด → redirect
 │   │   └── utils/               ตรวจ URL, แยกอุปกรณ์, hash IP
 │   └── .env.example
 ├── frontend/                    React + Vite
 │   ├── src/
-│   │   ├── pages/               Home, History, Stats
-│   │   ├── components/          UrlForm, LinkTag, QrBlock, CopyButton
+│   │   ├── pages/               Login, Home, History, Stats, Users
+│   │   ├── components/          AuthProvider, RequireAuth, UrlForm, Charts, QrBlock ฯลฯ
 │   │   ├── api.js               เรียก Backend
 │   │   ├── format.js            จัดรูปแบบวันที่ ตัวเลข และชื่ออุปกรณ์
 │   │   └── styles.css
@@ -214,6 +229,9 @@ Backend (`backend/.env`)
 | `CORS_ORIGIN` | `http://localhost:5173` | โดเมนของ Frontend ที่อนุญาต (คั่นด้วย `,` ได้) |
 | `IP_SALT` | ข้อความสุ่ม | ใช้ hash IP ของผู้เข้าชม |
 | `STATS_TIMEZONE` | `Asia/Bangkok` | เขตเวลาที่ใช้นับสถิติรายวัน |
+| `JWT_SECRET` | ข้อความสุ่มยาวๆ | ใช้เซ็น token เข้าสู่ระบบ ถ้าเปลี่ยน ทุกคนต้องเข้าสู่ระบบใหม่ |
+| `ADMIN_USERNAME` | `admin` | ชื่อผู้ดูแลระบบหลัก สร้างให้อัตโนมัติตอนเซิร์ฟเวอร์เริ่ม |
+| `ADMIN_PASSWORD` | รหัสผ่าน 8 ตัวขึ้นไป | รหัสผ่านผู้ดูแลระบบหลัก เปลี่ยนค่านี้เพื่อรีเซ็ตรหัสผ่าน admin หลัก |
 
 Frontend (`frontend/.env`)
 
@@ -229,6 +247,7 @@ Frontend (`frontend/.env`)
 2. **Backend (Render)** ที่ [render.com](https://render.com) เลือก **New → Blueprint** แล้วเลือก repository นี้
    - Render อ่านค่าจาก [render.yaml](render.yaml) ให้เอง
    - ใส่ `DATABASE_URL` = connection string ของ Neon
+   - ใส่ `ADMIN_USERNAME` และ `ADMIN_PASSWORD` ของผู้ดูแลระบบหลัก (`JWT_SECRET` Render สุ่มให้)
    - `BASE_URL` ไม่ต้องใส่ ระบบใช้โดเมนของ Render ให้อัตโนมัติ
 
 3. **Frontend (Vercel)** Import repository ที่ [vercel.com](https://vercel.com)
@@ -239,22 +258,31 @@ Frontend (`frontend/.env`)
 
 ## API
 
-| Method | Path | คำอธิบาย |
-|---|---|---|
-| GET | `/api/health` | ตรวจสถานะเซิร์ฟเวอร์และฐานข้อมูล |
-| POST | `/api/urls` | สร้าง Short URL |
-| GET | `/api/urls?search=` | ประวัติลิงก์ทั้งหมดพร้อมจำนวนการเปิด |
-| GET | `/api/urls/summary` | จำนวนลิงก์และการเปิดรวมทั้งระบบ |
-| GET | `/api/urls/:id/stats` | สถิติของลิงก์ |
-| PATCH | `/api/urls/:id` | เปิด/ปิดลิงก์ |
-| DELETE | `/api/urls/:id` | ลบลิงก์พร้อมสถิติ |
-| GET | `/:code` | บันทึกการเปิดแล้ว redirect ไปยัง URL ต้นฉบับ |
+| Method | Path | สิทธิ์ | คำอธิบาย |
+|---|---|---|---|
+| GET | `/api/health` | ทุกคน | ตรวจสถานะเซิร์ฟเวอร์และฐานข้อมูล |
+| POST | `/api/auth/register` | ทุกคน | สมัครสมาชิก ได้ token กลับมา |
+| POST | `/api/auth/login` | ทุกคน | เข้าสู่ระบบ ได้ token กลับมา (ผิด 5 ครั้งใน 15 นาทีจะถูกพัก) |
+| GET | `/api/auth/me` | ผู้ใช้ | ข้อมูลผู้ใช้ที่เข้าสู่ระบบอยู่ |
+| POST | `/api/urls` | ผู้ใช้ | สร้าง Short URL |
+| GET | `/api/urls?search=&userId=` | ผู้ใช้ | ลิงก์ของตัวเอง (admin: ทุกลิงก์ หรือกรองด้วย `userId`) |
+| GET | `/api/urls/summary?userId=` | ผู้ใช้ | ข้อมูล dashboard ของลิงก์ตัวเอง (admin: ทั้งระบบ หรือรายผู้ใช้) |
+| GET | `/api/urls/:id/stats` | เจ้าของ / admin | สถิติของลิงก์ |
+| PATCH | `/api/urls/:id` | เจ้าของ / admin | เปิด/ปิดลิงก์ |
+| DELETE | `/api/urls/:id` | เจ้าของ / admin | ลบลิงก์พร้อมสถิติ |
+| GET | `/api/users` | admin | รายชื่อผู้ใช้ พร้อมจำนวนลิงก์และการเปิด |
+| PATCH | `/api/users/:id` | admin | ตั้ง/ถอดสิทธิ์ admin (ยกเว้น admin หลักและตัวเอง) |
+| POST | `/api/users/:id/password` | admin | รีเซ็ตรหัสผ่านผู้ใช้ |
+| GET | `/:code` | ทุกคน | บันทึกการเปิดแล้ว redirect ไปยัง URL ต้นฉบับ |
+
+API ที่ต้องเข้าสู่ระบบ ส่ง token ใน header `Authorization: Bearer <token>` ลิงก์ของคนอื่นจะตอบ 404 เหมือนไม่มีลิงก์นั้น
 
 ### ตัวอย่าง: สร้าง Short URL
 
 ```bash
 curl -X POST http://localhost:4000/api/urls \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token จาก /api/auth/login>" \
   -d '{"url": "https://www.synerry.com"}'
 ```
 
@@ -281,8 +309,11 @@ curl -X POST http://localhost:4000/api/urls \
 | 201 | สร้างลิงก์สำเร็จ |
 | 302 | Redirect ไปยัง URL ต้นฉบับ |
 | 400 | ข้อมูลไม่ถูกต้อง เช่น URL ผิดรูปแบบ |
-| 404 | ไม่พบลิงก์ |
-| 409 | รหัสที่ตั้งเองถูกใช้แล้ว |
+| 401 | ยังไม่ได้เข้าสู่ระบบ token หมดอายุ หรือชื่อผู้ใช้/รหัสผ่านไม่ถูกต้อง |
+| 403 | ไม่มีสิทธิ์ เช่น ผู้ใช้ทั่วไปเรียก API ของ admin |
+| 404 | ไม่พบลิงก์ (รวมถึงลิงก์ของคนอื่น) |
+| 409 | รหัสที่ตั้งเองหรือชื่อผู้ใช้ถูกใช้แล้ว |
+| 429 | เข้าสู่ระบบผิดเกินจำนวนครั้งที่กำหนด |
 | 410 | ลิงก์ถูกปิดใช้งานหรือหมดอายุ |
 
 ## หลักการทำงาน

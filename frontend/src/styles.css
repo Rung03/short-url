@@ -125,8 +125,25 @@ a:hover {
 .topbar-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: 60px;
+  gap: 16px;
+  min-height: 60px;
+}
+.topbar-inner .nav {
+  margin-left: auto;
+}
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+.user-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  font-size: 14px;
 }
 .brand {
   display: flex;
@@ -468,6 +485,64 @@ a:hover {
   color: var(--warning);
   background: var(--warning-soft);
 }
+.badge-admin {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Login / register */
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+.auth-tabs button {
+  font: inherit;
+  font-weight: 500;
+  padding: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.auth-tabs button.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.auth-note {
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Admin: whose report */
+.user-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.user-filter .input {
+  width: auto;
+  min-width: 180px;
+  padding: 7px 10px;
+}
 
 /* Table */
 .table-card {
@@ -648,6 +723,30 @@ a:hover {
 }
 
 @media (max-width: 760px) {
+  /* Brand + user on the first row, navigation on its own row below */
+  .topbar-inner {
+    flex-wrap: wrap;
+    gap: 0 12px;
+    padding-top: 8px;
+  }
+  .user-menu {
+    margin-left: auto;
+    padding-left: 0;
+    border-left: 0;
+  }
+  .topbar-inner .nav {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    padding: 6px 0 8px;
+    overflow-x: auto;
+  }
+  .user-filter {
+    width: 100%;
+  }
+  .user-filter .input {
+    flex: 1;
+  }
   .url-form-row,
   .result,
   .stats-head {

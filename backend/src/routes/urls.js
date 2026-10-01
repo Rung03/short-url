@@ -3,18 +3,37 @@ import { customAlphabet } from 'nanoid';
 import { pool } from '../db.js';
 import { normalizeUrl, validateCustomCode, ValidationError } from '../utils/url.js';
 import { baseUrl, toUrlDto } from '../utils/format.js';
+import { requireAuth } from '../auth.js';
 
 const router = Router();
+router.use(requireAuth);
+
 const generateCode = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 7);
 const TIMEZONE = process.env.STATS_TIMEZONE || 'Asia/Bangkok';
 const UNIQUE_VIOLATION = '23505';
 
-const URL_COLUMNS = `u.id, u.original_url, u.short_code, u.is_active, u.expires_at, u.created_at`;
+const URL_COLUMNS = `u.id, u.original_url, u.short_code, u.is_active, u.expires_at, u.created_at, u.user_id`;
 
 function parseId(value) {
   const id = Number(value);
   if (!Number.isInteger(id) || id <= 0) throw new ValidationError('id ไม่ถูกต้อง');
   return id;
+}
+
+// Whose links a request may see, passed to SQL as $1 (NULL = every link).
+// Users only ever see their own; admins see all, or one user via ?userId=.
+function ownerScope(req) {
+  if (req.user.role !== 'admin') return req.user.id;
+  return req.query.userId ? parseId(req.query.userId) : null;
+}
+const OWNED = '($1::int IS NULL OR u.user_id = $1)';
+
+// A link outside the caller's scope answers 404, so its existence isn't revealed
+async function findOwnedLink(req, id) {
+  const { rows } = await pool.query(`SELECT ${URL_COLUMNS} FROM urls u WHERE u.id = $1`, [id]);
+  const link = rows[0];
+  if (!link || (req.user.role !== 'admin' && link.user_id !== req.user.id)) return null;
+  return link;
 }
 
 function parseExpiresAt(value) {
@@ -29,10 +48,10 @@ function parseExpiresAt(value) {
 router.post('/', async (req, res) => {
   const { url, customCode, expiresAt } = req.body ?? {};
   const originalUrl = normalizeUrl(url, baseUrl());
-  const values = [originalUrl, parseExpiresAt(expiresAt)];
-  const insert = `INSERT INTO urls (original_url, expires_at, short_code)
-                  VALUES ($1, $2, $3)
-                  RETURNING id, original_url, short_code, is_active, expires_at, created_at`;
+  const values = [originalUrl, parseExpiresAt(expiresAt), req.user.id];
+  const insert = `INSERT INTO urls (original_url, expires_at, user_id, short_code)
+                  VALUES ($1, $2, $3, $4)
+                  RETURNING id, original_url, short_code, is_active, expires_at, created_at, user_id`;
 
   if (customCode) {
     const code = validateCustomCode(String(customCode).trim());
@@ -59,22 +78,23 @@ router.post('/', async (req, res) => {
   throw new Error('Could not generate a unique short code');
 });
 
-// GET /api/urls?search=
+// GET /api/urls?search=&userId=
 router.get('/', async (req, res) => {
   const search = typeof req.query.search === 'string' ? req.query.search.trim() : '';
-  const params = [];
-  let where = '';
+  const params = [ownerScope(req)];
+  let where = OWNED;
   if (search) {
     params.push(`%${search}%`);
-    where = 'WHERE u.original_url ILIKE $1 OR u.short_code ILIKE $1';
+    where += ' AND (u.original_url ILIKE $2 OR u.short_code ILIKE $2)';
   }
 
   const { rows } = await pool.query(
-    `SELECT ${URL_COLUMNS}, COUNT(c.id) AS click_count
+    `SELECT ${URL_COLUMNS}, us.username AS owner_username, COUNT(c.id) AS click_count
        FROM urls u
+       LEFT JOIN users us ON us.id = u.user_id
        LEFT JOIN clicks c ON c.url_id = u.id
-       ${where}
-      GROUP BY u.id
+      WHERE ${where}
+      GROUP BY u.id, us.username
       ORDER BY u.created_at DESC, u.id DESC
       LIMIT 500`,
     params
@@ -85,32 +105,49 @@ router.get('/', async (req, res) => {
 const REFERRER_HOST = `COALESCE(regexp_replace(substring(referrer from '^[A-Za-z][A-Za-z0-9+.-]*://([^/:?#]+)'), '^www\\.', ''), 'direct')`;
 const toCount = (rows) => rows.map((r) => ({ name: r.name, clicks: Number(r.clicks) }));
 
-// GET /api/urls/summary  (dashboard across all links)
+// GET /api/urls/summary?userId=  (dashboard: own links, or every link for admins)
 router.get('/summary', async (req, res) => {
+  const scope = ownerScope(req);
+  // Clicks on links inside the scope
+  const scopedClicks = `SELECT c.* FROM clicks c JOIN urls u ON u.id = c.url_id WHERE ${OWNED}`;
+
   const [totals, daily, devices, referrers, topLinks] = await Promise.all([
     pool.query(
       `SELECT
-         (SELECT COUNT(*) FROM urls) AS total_links,
-         (SELECT COUNT(*) FROM urls WHERE is_active AND (expires_at IS NULL OR expires_at > now())) AS active_links,
-         (SELECT COUNT(*) FROM clicks) AS total_clicks,
-         (SELECT COUNT(DISTINCT ip_hash) FROM clicks) AS unique_visitors,
-         (SELECT COUNT(*) FROM clicks
-           WHERE (clicked_at AT TIME ZONE $1)::date = (now() AT TIME ZONE $1)::date) AS clicks_today`,
-      [TIMEZONE]
+         (SELECT COUNT(*) FROM urls u WHERE ${OWNED}) AS total_links,
+         (SELECT COUNT(*) FROM urls u
+           WHERE ${OWNED} AND u.is_active AND (u.expires_at IS NULL OR u.expires_at > now())) AS active_links,
+         (SELECT COUNT(*) FROM (${scopedClicks}) sc) AS total_clicks,
+         (SELECT COUNT(DISTINCT ip_hash) FROM (${scopedClicks}) sc) AS unique_visitors,
+         (SELECT COUNT(*) FROM (${scopedClicks}) sc
+           WHERE (clicked_at AT TIME ZONE $2)::date = (now() AT TIME ZONE $2)::date) AS clicks_today`,
+      [scope, TIMEZONE]
     ),
     pool.query(
-      `SELECT to_char(d, 'YYYY-MM-DD') AS date, COUNT(c.id) AS clicks
-         FROM generate_series((now() AT TIME ZONE $1)::date - 13, (now() AT TIME ZONE $1)::date, interval '1 day') AS d
-         LEFT JOIN clicks c ON (c.clicked_at AT TIME ZONE $1)::date = d::date
+      `SELECT to_char(d, 'YYYY-MM-DD') AS date, COUNT(sc.id) AS clicks
+         FROM generate_series((now() AT TIME ZONE $2)::date - 13, (now() AT TIME ZONE $2)::date, interval '1 day') AS d
+         LEFT JOIN (${scopedClicks}) sc ON (sc.clicked_at AT TIME ZONE $2)::date = d::date
         GROUP BY d ORDER BY d`,
-      [TIMEZONE]
+      [scope, TIMEZONE]
     ),
-    pool.query(`SELECT COALESCE(device_type, 'unknown') AS name, COUNT(*) AS clicks FROM clicks GROUP BY 1 ORDER BY 2 DESC`),
-    pool.query(`SELECT ${REFERRER_HOST} AS name, COUNT(*) AS clicks FROM clicks GROUP BY 1 ORDER BY 2 DESC LIMIT 6`),
     pool.query(
-      `SELECT ${URL_COLUMNS}, COUNT(c.id) AS click_count
-         FROM urls u JOIN clicks c ON c.url_id = u.id
-        GROUP BY u.id ORDER BY click_count DESC, u.id DESC LIMIT 5`
+      `SELECT COALESCE(device_type, 'unknown') AS name, COUNT(*) AS clicks
+         FROM (${scopedClicks}) sc GROUP BY 1 ORDER BY 2 DESC`,
+      [scope]
+    ),
+    pool.query(
+      `SELECT ${REFERRER_HOST} AS name, COUNT(*) AS clicks
+         FROM (${scopedClicks}) sc GROUP BY 1 ORDER BY 2 DESC LIMIT 6`,
+      [scope]
+    ),
+    pool.query(
+      `SELECT ${URL_COLUMNS}, us.username AS owner_username, COUNT(c.id) AS click_count
+         FROM urls u
+         JOIN clicks c ON c.url_id = u.id
+         LEFT JOIN users us ON us.id = u.user_id
+        WHERE ${OWNED}
+        GROUP BY u.id, us.username ORDER BY click_count DESC, u.id DESC LIMIT 5`,
+      [scope]
     ),
   ]);
 
@@ -131,8 +168,8 @@ router.get('/summary', async (req, res) => {
 // GET /api/urls/:id/stats
 router.get('/:id/stats', async (req, res) => {
   const id = parseId(req.params.id);
-  const link = await pool.query(`SELECT ${URL_COLUMNS} FROM urls u WHERE u.id = $1`, [id]);
-  if (!link.rows.length) return res.status(404).json({ error: 'ไม่พบลิงก์' });
+  const link = await findOwnedLink(req, id);
+  if (!link) return res.status(404).json({ error: 'ไม่พบลิงก์' });
 
   const [totals, daily, devices, referrers, recent] = await Promise.all([
     pool.query(
@@ -167,7 +204,7 @@ router.get('/:id/stats', async (req, res) => {
   const t = totals.rows[0];
 
   res.json({
-    link: toUrlDto({ ...link.rows[0], click_count: t.clicks }),
+    link: toUrlDto({ ...link, click_count: t.clicks }),
     totalClicks: Number(t.clicks),
     uniqueVisitors: Number(t.unique_visitors),
     lastClickedAt: t.last_clicked_at,
@@ -189,6 +226,7 @@ router.patch('/:id', async (req, res) => {
   const id = parseId(req.params.id);
   const { isActive } = req.body ?? {};
   if (typeof isActive !== 'boolean') throw new ValidationError('isActive ต้องเป็น true หรือ false');
+  if (!(await findOwnedLink(req, id))) return res.status(404).json({ error: 'ไม่พบลิงก์' });
 
   const { rows } = await pool.query(
     `UPDATE urls u SET is_active = $2 WHERE u.id = $1
@@ -202,6 +240,7 @@ router.patch('/:id', async (req, res) => {
 // DELETE /api/urls/:id  (clicks are removed by ON DELETE CASCADE)
 router.delete('/:id', async (req, res) => {
   const id = parseId(req.params.id);
+  if (!(await findOwnedLink(req, id))) return res.status(404).json({ error: 'ไม่พบลิงก์' });
   const { rowCount } = await pool.query('DELETE FROM urls WHERE id = $1', [id]);
   if (!rowCount) return res.status(404).json({ error: 'ไม่พบลิงก์' });
   res.status(204).end();

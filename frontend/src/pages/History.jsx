@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../api.js'
+import { useAuth } from '../auth-context.js'
 import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import { DailyChart, DonutCard, KpiTile, TopLinksChart } from '../components/Charts.jsx'
@@ -49,25 +50,52 @@ function Dashboard({ summary: raw }) {
   )
 }
 
+// Admins pick whose report to see; the choice lives in ?userId= so it can be linked to
+function UserFilter({ value, onChange }) {
+  const [users, setUsers] = useState([])
+  useEffect(() => {
+    api.listUsers().then(setUsers).catch(() => {})
+  }, [])
+
+  return (
+    <label className="user-filter">
+      <span className="muted">ดูรายงานของ</span>
+      <select className="input" value={value} onChange={(e) => onChange(e.target.value)}>
+        <option value="">ทุกคน (ทั้งระบบ)</option>
+        {users.map((u) => (
+          <option key={u.id} value={u.id}>
+            {u.username}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
 export default function History() {
+  const { user } = useAuth()
+  const isAdmin = user.role === 'admin'
+  const [params, setParams] = useSearchParams()
+  const userId = isAdmin ? params.get('userId') || '' : ''
+
   const [search, setSearch] = useState('')
   const [links, setLinks] = useState(null)
   const [summary, setSummary] = useState(null)
   const [error, setError] = useState('')
   const [busyId, setBusyId] = useState(null)
 
-  const loadSummary = () => api.getSummary().then(setSummary).catch(() => {})
+  const loadSummary = useCallback(() => api.getSummary({ userId }).then(setSummary).catch(() => {}), [userId])
 
   useEffect(() => {
     loadSummary()
-  }, [])
+  }, [loadSummary])
 
   // Debounce typing so each keystroke doesn't hit the API
   useEffect(() => {
     let cancelled = false
     const timer = setTimeout(() => {
       api
-        .listUrls(search.trim())
+        .listUrls({ search: search.trim(), userId })
         .then((data) => !cancelled && (setLinks(data), setError('')))
         .catch((err) => !cancelled && setError(err.message))
     }, 250)
@@ -75,7 +103,10 @@ export default function History() {
       cancelled = true
       clearTimeout(timer)
     }
-  }, [search])
+  }, [search, userId])
+
+  const selectUser = (id) => setParams(id ? { userId: id } : {})
+  const showOwner = isAdmin && !userId
 
   const toggle = async (link) => {
     setBusyId(link.id)
@@ -106,7 +137,10 @@ export default function History() {
 
   return (
     <>
-      <h1>ประวัติและรายงาน</h1>
+      <div className="page-head">
+        <h1>{isAdmin ? 'รายงานทั้งระบบ' : 'ประวัติและรายงาน'}</h1>
+        {isAdmin && <UserFilter value={userId} onChange={selectUser} />}
+      </div>
 
       <Dashboard summary={summary} />
 
@@ -138,6 +172,7 @@ export default function History() {
               <tr>
                 <th>URL ต้นฉบับ</th>
                 <th>Short URL</th>
+                {showOwner && <th>เจ้าของ</th>}
                 <th className="num">เปิด</th>
                 <th>สร้างเมื่อ</th>
                 <th>สถานะ</th>
@@ -158,6 +193,7 @@ export default function History() {
                       <CopyButton text={link.shortUrl} className="btn-sm" />
                     </div>
                   </td>
+                  {showOwner && <td data-label="เจ้าของ">{link.owner ?? '-'}</td>}
                   <td className="num" data-label="เปิด">{formatNumber(link.clickCount)}</td>
                   <td data-label="สร้างเมื่อ">{formatDateTime(link.createdAt)}</td>
                   <td data-label="สถานะ"><StatusBadge status={link.status} /></td>

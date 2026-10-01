@@ -21,5 +21,6 @@ export function toUrlDto(row) {
     createdAt: row.created_at,
     status: linkStatus(row),
     clickCount: Number(row.click_count ?? 0),
+    owner: row.owner_username ?? null,
   };
 }

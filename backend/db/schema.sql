@@ -1,5 +1,13 @@
 -- Short URL schema (PostgreSQL)
 
+CREATE TABLE IF NOT EXISTS users (
+  id             SERIAL       PRIMARY KEY,
+  username       VARCHAR(30)  NOT NULL UNIQUE,
+  password_hash  VARCHAR(100) NOT NULL,
+  role           VARCHAR(10)  NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+  created_at     TIMESTAMPTZ  NOT NULL DEFAULT now()
+);
+
 CREATE TABLE IF NOT EXISTS urls (
   id            SERIAL       PRIMARY KEY,
   original_url  TEXT         NOT NULL,
@@ -11,6 +19,10 @@ CREATE TABLE IF NOT EXISTS urls (
 
 -- title was removed; drop it from databases created before that
 ALTER TABLE urls DROP COLUMN IF EXISTS title;
+
+-- Link owner (added with user accounts)
+ALTER TABLE urls ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users (id) ON DELETE SET NULL;
+CREATE INDEX IF NOT EXISTS idx_urls_user ON urls (user_id);
 
 CREATE TABLE IF NOT EXISTS clicks (
   id           BIGSERIAL    PRIMARY KEY,
