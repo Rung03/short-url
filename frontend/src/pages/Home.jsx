@@ -13,6 +13,10 @@ export default function Home() {
     <>
       <section className="hero">
         <h1>Short URL</h1>
+        <p className="hero-lead">
+          ระบบย่อลิงก์ยาวให้เป็นลิงก์สั้นที่แชร์ง่าย พร้อม QR Code
+          และสถิติว่ามีคนเปิดกี่ครั้ง จากอุปกรณ์และช่องทางไหน
+        </p>
         <ol className="steps">
           <li>วางลิงก์ยาว</li>
           <li>กดย่อลิงก์ รับลิงก์สั้นและ QR Code</li>
