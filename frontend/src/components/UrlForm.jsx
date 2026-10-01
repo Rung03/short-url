@@ -41,13 +41,13 @@ export default function UrlForm({ onCreated }) {
           type="text"
           inputMode="url"
           autoComplete="url"
-          placeholder="https://"
+          placeholder="วางลิงก์ที่ต้องการย่อ เช่น https://..."
           value={form.url}
           onChange={update('url')}
           required
         />
         <button className="btn btn-primary btn-lg" type="submit" disabled={loading || !form.url.trim()}>
-          {loading ? 'กำลังย่อ…' : 'ย่อลิงก์'}
+          {loading ? 'กำลังสร้าง…' : 'สร้างลิงก์สั้น'}
         </button>
       </div>
 
