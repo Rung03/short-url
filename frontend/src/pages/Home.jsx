@@ -13,6 +13,11 @@ export default function Home() {
     <>
       <section className="hero">
         <h1>Short URL</h1>
+        <ol className="steps">
+          <li>วางลิงก์ยาว</li>
+          <li>กดย่อลิงก์ รับลิงก์สั้นและ QR Code</li>
+          <li>แชร์ แล้วดูจำนวนคนเปิดได้ที่ Dashboard</li>
+        </ol>
       </section>
 
       <UrlForm onCreated={setCreated} />
