@@ -412,10 +412,92 @@ a:hover {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
-.stat-tile strong.stat-small {
+.stat-tile .stat-small {
+  display: block;
   font-size: 15px;
   font-weight: 500;
   padding-top: 8px;
+}
+.stat-grid-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+/* Dashboard */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.dashboard-main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 20px;
+}
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+.card-head h2 {
+  margin-bottom: 12px;
+}
+.section-title {
+  margin: 8px 0 0;
+  font-size: 18px;
+}
+.top-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: rank;
+}
+.top-links li {
+  counter-increment: rank;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+.top-links li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+.top-links li::before {
+  content: counter(rank);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+.top-links strong {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.top-link {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--text);
+}
+.top-link:hover {
+  text-decoration: none;
+}
+.top-link:hover .top-link-code {
+  text-decoration: underline;
+}
+.top-link-code {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 /* Badges */
@@ -526,7 +608,6 @@ a:hover {
 }
 .chart {
   width: 100%;
-  height: 240px;
 }
 .chart-tooltip {
   display: flex;
@@ -571,6 +652,15 @@ a:hover {
 }
 
 /* Responsive */
+@media (max-width: 960px) {
+  .stat-grid-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .dashboard-main {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 760px) {
   .url-form-row,
   .result,
@@ -582,8 +672,12 @@ a:hover {
   .two-col {
     grid-template-columns: 1fr;
   }
-  .stat-grid {
+  .stat-grid,
+  .stat-grid-5 {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-grid-5 > :last-child {
+    grid-column: 1 / -1;
   }
   .qr-block {
     align-self: center;

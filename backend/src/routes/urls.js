@@ -90,23 +90,49 @@ router.get('/', async (req, res) => {
   res.json(rows.map(toUrlDto));
 });
 
-// GET /api/urls/summary
+const REFERRER_HOST = `COALESCE(regexp_replace(substring(referrer from '^[A-Za-z][A-Za-z0-9+.-]*://([^/:?#]+)'), '^www\\.', ''), 'direct')`;
+const toCount = (rows) => rows.map((r) => ({ name: r.name, clicks: Number(r.clicks) }));
+
+// GET /api/urls/summary  (dashboard across all links)
 router.get('/summary', async (req, res) => {
-  const { rows } = await pool.query(
-    `SELECT
-       (SELECT COUNT(*) FROM urls) AS total_links,
-       (SELECT COUNT(*) FROM urls WHERE is_active AND (expires_at IS NULL OR expires_at > now())) AS active_links,
-       (SELECT COUNT(*) FROM clicks) AS total_clicks,
-       (SELECT COUNT(*) FROM clicks
-         WHERE (clicked_at AT TIME ZONE $1)::date = (now() AT TIME ZONE $1)::date) AS clicks_today`,
-    [TIMEZONE]
-  );
-  const r = rows[0];
+  const [totals, daily, devices, referrers, topLinks] = await Promise.all([
+    pool.query(
+      `SELECT
+         (SELECT COUNT(*) FROM urls) AS total_links,
+         (SELECT COUNT(*) FROM urls WHERE is_active AND (expires_at IS NULL OR expires_at > now())) AS active_links,
+         (SELECT COUNT(*) FROM clicks) AS total_clicks,
+         (SELECT COUNT(DISTINCT ip_hash) FROM clicks) AS unique_visitors,
+         (SELECT COUNT(*) FROM clicks
+           WHERE (clicked_at AT TIME ZONE $1)::date = (now() AT TIME ZONE $1)::date) AS clicks_today`,
+      [TIMEZONE]
+    ),
+    pool.query(
+      `SELECT to_char(d, 'YYYY-MM-DD') AS date, COUNT(c.id) AS clicks
+         FROM generate_series((now() AT TIME ZONE $1)::date - 13, (now() AT TIME ZONE $1)::date, interval '1 day') AS d
+         LEFT JOIN clicks c ON (c.clicked_at AT TIME ZONE $1)::date = d::date
+        GROUP BY d ORDER BY d`,
+      [TIMEZONE]
+    ),
+    pool.query(`SELECT COALESCE(device_type, 'unknown') AS name, COUNT(*) AS clicks FROM clicks GROUP BY 1 ORDER BY 2 DESC`),
+    pool.query(`SELECT ${REFERRER_HOST} AS name, COUNT(*) AS clicks FROM clicks GROUP BY 1 ORDER BY 2 DESC LIMIT 6`),
+    pool.query(
+      `SELECT ${URL_COLUMNS}, COUNT(c.id) AS click_count
+         FROM urls u JOIN clicks c ON c.url_id = u.id
+        GROUP BY u.id ORDER BY click_count DESC, u.id DESC LIMIT 5`
+    ),
+  ]);
+
+  const r = totals.rows[0];
   res.json({
     totalLinks: Number(r.total_links),
     activeLinks: Number(r.active_links),
     totalClicks: Number(r.total_clicks),
+    uniqueVisitors: Number(r.unique_visitors),
     clicksToday: Number(r.clicks_today),
+    daily: daily.rows.map((d) => ({ date: d.date, clicks: Number(d.clicks) })),
+    devices: toCount(devices.rows),
+    referrers: toCount(referrers.rows),
+    topLinks: topLinks.rows.map(toUrlDto),
   });
 });
 
@@ -135,8 +161,7 @@ router.get('/:id/stats', async (req, res) => {
       [id]
     ),
     pool.query(
-      `SELECT COALESCE(regexp_replace(substring(referrer from '^[A-Za-z][A-Za-z0-9+.-]*://([^/:?#]+)'), '^www\\.', ''), 'direct') AS name,
-              COUNT(*) AS clicks
+      `SELECT ${REFERRER_HOST} AS name, COUNT(*) AS clicks
          FROM clicks WHERE url_id = $1 GROUP BY 1 ORDER BY 2 DESC LIMIT 8`,
       [id]
     ),
@@ -148,7 +173,6 @@ router.get('/:id/stats', async (req, res) => {
   ]);
 
   const t = totals.rows[0];
-  const toCount = (rows) => rows.map((r) => ({ name: r.name, clicks: Number(r.clicks) }));
 
   res.json({
     link: toUrlDto({ ...link.rows[0], click_count: t.clicks }),

@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
 import Home from './pages/Home.jsx'
-import History from './pages/History.jsx'
 
-// Recharts is large, so only load it when a stats page is opened
+// Recharts is large, so only load it on pages that draw charts
+const History = lazy(() => import('./pages/History.jsx'))
 const Stats = lazy(() => import('./pages/Stats.jsx'))
 
 function NotFound() {

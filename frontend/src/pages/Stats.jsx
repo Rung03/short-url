@@ -1,51 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api } from '../api.js'
 import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
 import QrBlock from '../components/QrBlock.jsx'
-import { deviceLabel, formatDateTime, formatDay, formatNumber, hostOf, referrerLabel } from '../format.js'
-
-function Breakdown({ title, items, label, total }) {
-  return (
-    <section className="card">
-      <h2>{title}</h2>
-      {items.length === 0 ? (
-        <p className="muted">ยังไม่มีข้อมูล</p>
-      ) : (
-        <ul className="breakdown">
-          {items.map((item) => {
-            const pct = total ? Math.round((item.clicks / total) * 100) : 0
-            return (
-              <li key={item.name}>
-                <div className="breakdown-row">
-                  <span>{label(item.name)}</span>
-                  <span className="muted">
-                    {formatNumber(item.clicks)} · {pct}%
-                  </span>
-                </div>
-                <div className="bar-track">
-                  <div className="bar-fill" style={{ width: `${pct}%` }} />
-                </div>
-              </li>
-            )
-          })}
-        </ul>
-      )}
-    </section>
-  )
-}
-
-function ChartTooltip({ active, payload, label }) {
-  if (!active || !payload?.length) return null
-  return (
-    <div className="chart-tooltip">
-      <span>{formatDay(label)}</span>
-      <strong>{formatNumber(payload[0].value)} ครั้ง</strong>
-    </div>
-  )
-}
+import { Breakdown, DailyChart, KpiTile } from '../components/Charts.jsx'
+import { deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
 
 export default function Stats() {
   const { id } = useParams()
@@ -119,49 +79,18 @@ export default function Stats() {
       </section>
 
       <section className="stat-grid">
-        <div className="stat-tile">
-          <span>เปิดทั้งหมด</span>
-          <strong>{formatNumber(stats.totalClicks)}</strong>
-        </div>
-        <div className="stat-tile">
-          <span>ผู้เข้าชมไม่ซ้ำ</span>
-          <strong>{formatNumber(stats.uniqueVisitors)}</strong>
-        </div>
-        <div className="stat-tile">
-          <span>14 วันล่าสุด</span>
-          <strong>{formatNumber(stats.daily.reduce((sum, d) => sum + d.clicks, 0))}</strong>
-        </div>
-        <div className="stat-tile">
-          <span>เปิดล่าสุด</span>
-          <strong className="stat-small">{stats.lastClickedAt ? formatDateTime(stats.lastClickedAt) : '-'}</strong>
-        </div>
+        <KpiTile label="เปิดทั้งหมด" value={formatNumber(stats.totalClicks)} />
+        <KpiTile label="ผู้เข้าชมไม่ซ้ำ" value={formatNumber(stats.uniqueVisitors)} />
+        <KpiTile label="14 วันล่าสุด" value={formatNumber(stats.daily.reduce((sum, d) => sum + d.clicks, 0))} />
+        <KpiTile
+          label="เปิดล่าสุด"
+          value={<span className="stat-small">{stats.lastClickedAt ? formatDateTime(stats.lastClickedAt) : '-'}</span>}
+        />
       </section>
 
       <section className="card">
         <h2>การเปิด 14 วันล่าสุด</h2>
-        <div className="chart">
-          <ResponsiveContainer width="100%" height={240}>
-            <BarChart data={stats.daily} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
-              <CartesianGrid vertical={false} stroke="var(--border)" />
-              <XAxis
-                dataKey="date"
-                tickFormatter={formatDay}
-                tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-                interval="preserveStartEnd"
-              />
-              <YAxis
-                allowDecimals={false}
-                tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <Tooltip content={<ChartTooltip />} cursor={{ fill: 'var(--accent-soft)' }} />
-              <Bar dataKey="clicks" fill="var(--accent)" radius={[4, 4, 0, 0]} maxBarSize={36} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <DailyChart data={stats.daily} />
       </section>
 
       <div className="two-col">

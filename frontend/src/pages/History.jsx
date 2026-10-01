@@ -3,27 +3,55 @@ import { Link } from 'react-router-dom'
 import { api } from '../api.js'
 import LinkTag, { StatusBadge } from '../components/LinkTag.jsx'
 import CopyButton from '../components/CopyButton.jsx'
-import { formatDateTime, formatNumber } from '../format.js'
+import { Breakdown, DailyChart, KpiTile } from '../components/Charts.jsx'
+import { deviceLabel, formatDateTime, formatNumber, hostOf, referrerLabel } from '../format.js'
 
-function Summary({ summary }) {
+function Dashboard({ summary }) {
   if (!summary) return null
+  const last14 = summary.daily.reduce((sum, d) => sum + d.clicks, 0)
+
   return (
-    <section className="stat-grid" aria-label="ภาพรวมระบบ">
-      <div className="stat-tile">
-        <span>ลิงก์ทั้งหมด</span>
-        <strong>{formatNumber(summary.totalLinks)}</strong>
+    <section className="dashboard" aria-label="Dashboard">
+      <div className="stat-grid stat-grid-5">
+        <KpiTile label="ลิงก์ทั้งหมด" value={formatNumber(summary.totalLinks)} />
+        <KpiTile label="ใช้งานได้" value={formatNumber(summary.activeLinks)} />
+        <KpiTile label="เปิดทั้งหมด" value={formatNumber(summary.totalClicks)} />
+        <KpiTile label="ผู้เข้าชมไม่ซ้ำ" value={formatNumber(summary.uniqueVisitors)} />
+        <KpiTile label="เปิดวันนี้" value={formatNumber(summary.clicksToday)} />
       </div>
-      <div className="stat-tile">
-        <span>ลิงก์ที่ใช้งานได้</span>
-        <strong>{formatNumber(summary.activeLinks)}</strong>
+
+      <div className="dashboard-main">
+        <section className="card">
+          <div className="card-head">
+            <h2>การเปิด 14 วันล่าสุด</h2>
+            <span className="muted">{formatNumber(last14)} ครั้ง</span>
+          </div>
+          <DailyChart data={summary.daily} height={260} />
+        </section>
+
+        <section className="card">
+          <h2>ลิงก์ยอดนิยม</h2>
+          {summary.topLinks.length === 0 ? (
+            <p className="muted">ยังไม่มีการเปิดลิงก์</p>
+          ) : (
+            <ol className="top-links">
+              {summary.topLinks.map((link) => (
+                <li key={link.id}>
+                  <Link to={`/stats/${link.id}`} className="top-link">
+                    <span className="top-link-code">/{link.shortCode}</span>
+                    <span className="muted truncate">{link.title || hostOf(link.originalUrl)}</span>
+                  </Link>
+                  <strong>{formatNumber(link.clickCount)}</strong>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
       </div>
-      <div className="stat-tile">
-        <span>การเปิดทั้งหมด</span>
-        <strong>{formatNumber(summary.totalClicks)}</strong>
-      </div>
-      <div className="stat-tile">
-        <span>เปิดวันนี้</span>
-        <strong>{formatNumber(summary.clicksToday)}</strong>
+
+      <div className="two-col">
+        <Breakdown title="อุปกรณ์" items={summary.devices} label={deviceLabel} total={summary.totalClicks} />
+        <Breakdown title="ที่มา" items={summary.referrers} label={referrerLabel} total={summary.totalClicks} />
       </div>
     </section>
   )
@@ -86,19 +114,21 @@ export default function History() {
 
   return (
     <>
+      <h1>ประวัติและรายงาน</h1>
+
+      <Dashboard summary={summary} />
+
       <div className="page-head">
-        <h1>ประวัติและรายงาน</h1>
+        <h2 className="section-title">ลิงก์ทั้งหมด</h2>
         <input
           className="input search"
           type="search"
-          placeholder="ค้นหา URL, รหัส หรือชื่อลิงก์"
+          placeholder="ค้นหา"
           aria-label="ค้นหาลิงก์"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-
-      <Summary summary={summary} />
 
       {error && <p className="form-error" role="alert">{error}</p>}
       {!links && !error && <p className="muted">กำลังโหลด…</p>}

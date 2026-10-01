@@ -1,4 +1,4 @@
-import { useState } from 'react'
+﻿import { useState } from 'react'
 import { api } from '../api.js'
 
 const EMPTY = { url: '', title: '', customCode: '', expiresAt: '' }
@@ -42,7 +42,7 @@ export default function UrlForm({ onCreated }) {
           type="text"
           inputMode="url"
           autoComplete="url"
-          placeholder="วางลิงก์ยาวๆ ที่นี่ เช่น https://www.example.com/..."
+          placeholder="https://"
           value={form.url}
           onChange={update('url')}
           required
@@ -64,24 +64,22 @@ export default function UrlForm({ onCreated }) {
       {showOptions && (
         <div className="url-form-options">
           <label className="field">
-            <span>ชื่อลิงก์ (ไม่บังคับ)</span>
+            <span>ชื่อลิงก์</span>
             <input className="input" type="text" maxLength={255} value={form.title} onChange={update('title')} />
           </label>
           <label className="field">
-            <span>ตั้งรหัสเอง (ไม่บังคับ)</span>
+            <span>ตั้งรหัสเอง</span>
             <input
               className="input"
               type="text"
-              placeholder="เช่น promo-2026"
               maxLength={20}
               pattern="[A-Za-z0-9_\-]{3,20}"
               value={form.customCode}
               onChange={update('customCode')}
             />
-            <small>a-z, A-Z, 0-9, - และ _ ยาว 3-20 ตัว</small>
           </label>
           <label className="field">
-            <span>วันหมดอายุ (ไม่บังคับ)</span>
+            <span>วันหมดอายุ</span>
             <input className="input" type="datetime-local" value={form.expiresAt} onChange={update('expiresAt')} />
           </label>
         </div>
