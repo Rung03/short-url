@@ -16,7 +16,6 @@ export function toUrlDto(row) {
     originalUrl: row.original_url,
     shortCode: row.short_code,
     shortUrl: `${baseUrl()}/${row.short_code}`,
-    title: row.title,
     isActive: row.is_active,
     expiresAt: row.expires_at,
     createdAt: row.created_at,

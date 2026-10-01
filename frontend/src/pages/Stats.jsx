@@ -55,7 +55,7 @@ export default function Stats() {
       <section className="card stats-head">
         <div className="stats-head-main">
           <div className="stats-title">
-            <h1>{link.title || hostOf(link.originalUrl)}</h1>
+            <h1>{hostOf(link.originalUrl)}</h1>
             <StatusBadge status={link.status} />
           </div>
           <div className="result-link">

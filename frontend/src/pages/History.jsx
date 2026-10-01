@@ -148,7 +148,6 @@ export default function History() {
               {links.map((link) => (
                 <tr key={link.id}>
                   <td className="col-original" data-label="URL ต้นฉบับ">
-                    {link.title && <strong className="truncate">{link.title}</strong>}
                     <a className="muted truncate" href={link.originalUrl} target="_blank" rel="noreferrer" title={link.originalUrl}>
                       {link.originalUrl}
                     </a>

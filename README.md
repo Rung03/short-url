@@ -105,7 +105,6 @@ erDiagram
         SERIAL id PK
         TEXT original_url "NOT NULL"
         VARCHAR(20) short_code UK "NOT NULL"
-        VARCHAR(255) title
         BOOLEAN is_active "DEFAULT true"
         TIMESTAMPTZ expires_at
         TIMESTAMPTZ created_at "DEFAULT now()"
@@ -259,7 +258,7 @@ curl -X POST http://localhost:4000/api/urls \
   -d '{"url": "https://www.synerry.com"}'
 ```
 
-ข้อมูลที่ส่งได้: `url` (จำเป็น), `title`, `customCode`, `expiresAt` (ISO 8601)
+ข้อมูลที่ส่งได้: `url` (จำเป็น), `customCode`, `expiresAt` (ISO 8601 ถ้าไม่ส่ง ลิงก์จะไม่มีวันหมดอายุ)
 
 ```json
 {
@@ -267,10 +266,10 @@ curl -X POST http://localhost:4000/api/urls \
   "originalUrl": "https://www.synerry.com/",
   "shortCode": "igFYEhG",
   "shortUrl": "http://localhost:4000/igFYEhG",
-  "title": null,
   "isActive": true,
   "expiresAt": null,
   "createdAt": "2026-10-01T04:04:42.490Z",
+  "status": "active",
   "clickCount": 0
 }
 ```

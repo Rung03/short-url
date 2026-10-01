@@ -139,7 +139,7 @@ function TopLinkTooltip({ active, payload }) {
   const link = payload[0].payload
   return (
     <div className="chart-tooltip">
-      <span>{link.title || link.originalUrl}</span>
+      <span>{link.originalUrl}</span>
       <strong>{formatNumber(link.clickCount)} ครั้ง</strong>
     </div>
   )

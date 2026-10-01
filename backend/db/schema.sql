@@ -4,11 +4,13 @@ CREATE TABLE IF NOT EXISTS urls (
   id            SERIAL       PRIMARY KEY,
   original_url  TEXT         NOT NULL,
   short_code    VARCHAR(20)  NOT NULL UNIQUE,
-  title         VARCHAR(255),
   is_active     BOOLEAN      NOT NULL DEFAULT TRUE,
   expires_at    TIMESTAMPTZ,
   created_at    TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
+
+-- title was removed; drop it from databases created before that
+ALTER TABLE urls DROP COLUMN IF EXISTS title;
 
 CREATE TABLE IF NOT EXISTS clicks (
   id           BIGSERIAL    PRIMARY KEY,

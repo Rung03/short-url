@@ -1,7 +1,7 @@
 ﻿import { useState } from 'react'
 import { api } from '../api.js'
 
-const EMPTY = { url: '', title: '', customCode: '', expiresAt: '' }
+const EMPTY = { url: '', customCode: '', expiresAt: '' }
 
 export default function UrlForm({ onCreated }) {
   const [form, setForm] = useState(EMPTY)
@@ -18,7 +18,6 @@ export default function UrlForm({ onCreated }) {
     try {
       const link = await api.createUrl({
         url: form.url,
-        title: form.title || undefined,
         customCode: form.customCode || undefined,
         // datetime-local is local time; send it as an absolute ISO timestamp
         expiresAt: form.expiresAt ? new Date(form.expiresAt).toISOString() : undefined,
@@ -63,10 +62,6 @@ export default function UrlForm({ onCreated }) {
 
       {showOptions && (
         <div className="url-form-options">
-          <label className="field">
-            <span>ชื่อลิงก์</span>
-            <input className="input" type="text" maxLength={255} value={form.title} onChange={update('title')} />
-          </label>
           <label className="field">
             <span>ตั้งรหัสเอง</span>
             <input

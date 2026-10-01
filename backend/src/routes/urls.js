@@ -9,7 +9,7 @@ const generateCode = customAlphabet('0123456789abcdefghijklmnopqrstuvwxyzABCDEFG
 const TIMEZONE = process.env.STATS_TIMEZONE || 'Asia/Bangkok';
 const UNIQUE_VIOLATION = '23505';
 
-const URL_COLUMNS = `u.id, u.original_url, u.short_code, u.title, u.is_active, u.expires_at, u.created_at`;
+const URL_COLUMNS = `u.id, u.original_url, u.short_code, u.is_active, u.expires_at, u.created_at`;
 
 function parseId(value) {
   const id = Number(value);
@@ -25,22 +25,14 @@ function parseExpiresAt(value) {
   return date;
 }
 
-function parseTitle(value) {
-  if (value === undefined || value === null) return null;
-  if (typeof value !== 'string') throw new ValidationError('ชื่อลิงก์ไม่ถูกต้อง');
-  const title = value.trim();
-  if (title.length > 255) throw new ValidationError('ชื่อลิงก์ยาวเกิน 255 ตัวอักษร');
-  return title || null;
-}
-
 // POST /api/urls
 router.post('/', async (req, res) => {
-  const { url, title, customCode, expiresAt } = req.body ?? {};
+  const { url, customCode, expiresAt } = req.body ?? {};
   const originalUrl = normalizeUrl(url, baseUrl());
-  const values = [originalUrl, parseTitle(title), parseExpiresAt(expiresAt)];
-  const insert = `INSERT INTO urls (original_url, title, expires_at, short_code)
-                  VALUES ($1, $2, $3, $4)
-                  RETURNING id, original_url, short_code, title, is_active, expires_at, created_at`;
+  const values = [originalUrl, parseExpiresAt(expiresAt)];
+  const insert = `INSERT INTO urls (original_url, expires_at, short_code)
+                  VALUES ($1, $2, $3)
+                  RETURNING id, original_url, short_code, is_active, expires_at, created_at`;
 
   if (customCode) {
     const code = validateCustomCode(String(customCode).trim());
@@ -74,7 +66,7 @@ router.get('/', async (req, res) => {
   let where = '';
   if (search) {
     params.push(`%${search}%`);
-    where = 'WHERE u.original_url ILIKE $1 OR u.short_code ILIKE $1 OR u.title ILIKE $1';
+    where = 'WHERE u.original_url ILIKE $1 OR u.short_code ILIKE $1';
   }
 
   const { rows } = await pool.query(
