@@ -2,13 +2,15 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { pool } from './db.js';
+import { migrate } from './migrate.js';
 import urlsRouter from './routes/urls.js';
 import redirectRouter from './routes/redirect.js';
 import { ValidationError } from './utils/url.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const origins = (process.env.CORS_ORIGIN || 'http://localhost:5173').split(',').map((s) => s.trim());
+const corsSetting = (process.env.CORS_ORIGIN || 'http://localhost:5173').trim();
+const origins = corsSetting === '*' ? '*' : corsSetting.split(',').map((s) => s.trim().replace(/\/+$/, ''));
 
 // Behind Render/Vercel proxies, read the visitor IP from X-Forwarded-For
 app.set('trust proxy', 1);
@@ -39,6 +41,13 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ error: 'เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์' });
 });
+
+try {
+  await migrate(pool);
+} catch (err) {
+  // Keep serving so /api/health can report the database problem
+  console.error('Database migration failed:', err.message);
+}
 
 app.listen(PORT, () => {
   console.log(`API running on http://localhost:${PORT}`);

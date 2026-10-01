@@ -1,5 +1,7 @@
 export function baseUrl() {
-  return (process.env.BASE_URL || `http://localhost:${process.env.PORT || 4000}`).replace(/\/+$/, '');
+  // RENDER_EXTERNAL_URL is set automatically on Render (https://<service>.onrender.com)
+  const url = process.env.BASE_URL || process.env.RENDER_EXTERNAL_URL || `http://localhost:${process.env.PORT || 4000}`;
+  return url.replace(/\/+$/, '');
 }
 
 export function linkStatus(row) {

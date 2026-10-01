@@ -224,22 +224,19 @@ Frontend (`frontend/.env`)
 
 ## การ Deploy แบบฟรี
 
-1. **Database (Neon)** สร้างโปรเจกต์ที่ [neon.tech](https://neon.tech) คัดลอก connection string จากนั้นรันจากเครื่องตัวเอง
+1. **Database (Neon)** สร้างโปรเจกต์ที่ [neon.tech](https://neon.tech) แล้วคัดลอก connection string
+   (ไม่ต้องสร้างตารางเอง Backend สร้างให้อัตโนมัติตอนเริ่มทำงาน)
 
-   ```bash
-   cd backend
-   DATABASE_URL="<connection string ของ Neon>" DB_SSL=true npm run db:init
-   ```
-
-2. **Backend (Render)** สร้าง Web Service จาก repository นี้ที่ [render.com](https://render.com)
-   - Root Directory: `backend`
-   - Build Command: `npm install`
-   - Start Command: `npm start`
-   - Environment: ใส่ตัวแปรทั้งหมดของ Backend โดย `BASE_URL` = โดเมนของ Render, `CORS_ORIGIN` = โดเมนของ Vercel, `DATABASE_URL` = connection string ของ Neon, `DB_SSL` = `true`
+2. **Backend (Render)** ที่ [render.com](https://render.com) เลือก **New → Blueprint** แล้วเลือก repository นี้
+   - Render อ่านค่าจาก [render.yaml](render.yaml) ให้เอง
+   - ใส่ `DATABASE_URL` = connection string ของ Neon
+   - `BASE_URL` ไม่ต้องใส่ ระบบใช้โดเมนของ Render ให้อัตโนมัติ
 
 3. **Frontend (Vercel)** Import repository ที่ [vercel.com](https://vercel.com)
    - Root Directory: `frontend`
    - Environment: `VITE_API_URL` = โดเมนของ Render
+
+4. กลับไปที่ Render แก้ `CORS_ORIGIN` จาก `*` เป็นโดเมนของ Vercel เพื่อให้เฉพาะหน้าเว็บของเราเรียก API ได้
 
 ## API
 

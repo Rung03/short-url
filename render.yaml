@@ -15,10 +15,9 @@ services:
         sync: false # Neon connection string
       - key: DB_SSL
         value: "true"
-      - key: BASE_URL
-        sync: false # https://<this service>.onrender.com
+      # BASE_URL defaults to RENDER_EXTERNAL_URL (https://<service>.onrender.com)
       - key: CORS_ORIGIN
-        sync: false # https://<frontend>.vercel.app
+        value: "*" # after the frontend is live, change to https://<frontend>.vercel.app
       - key: IP_SALT
         generateValue: true
       - key: STATS_TIMEZONE

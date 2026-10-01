@@ -1,12 +1,9 @@
 // Creates the database (if missing) and runs db/schema.sql, then prints the tables.
 import 'dotenv/config';
-import fs from 'node:fs/promises';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { dbConfig } from '../src/db.js';
+import { migrate } from '../src/migrate.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dbName = process.env.DB_NAME || 'shorturl';
 
 // 1) Create the database from the default "postgres" database.
@@ -29,8 +26,7 @@ if (!process.env.DATABASE_URL) {
 const client = new pg.Client(dbConfig(dbName));
 await client.connect();
 try {
-  const schema = await fs.readFile(path.join(__dirname, '../db/schema.sql'), 'utf8');
-  await client.query(schema);
+  await migrate(client);
   console.log(`Database "${dbName}" ready.\n`);
 
   const { rows: tables } = await client.query(
