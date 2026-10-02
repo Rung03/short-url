@@ -4,9 +4,6 @@
 ภาพทั้งหมดเขียนด้วย [Mermaid](https://mermaid.js.org) GitHub แสดงเป็นแผนภาพให้อัตโนมัติ
 
 ![Short URL System Architecture](architecture.svg)
-
-ภาพรวม Architecture + DFD + ER ในภาพเดียว: [system-overview.svg](system-overview.svg)
-
 ## สารบัญ
 
 1. [ผู้เกี่ยวข้องกับระบบ](#1-ผู้เกี่ยวข้องกับระบบ)

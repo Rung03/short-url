@@ -2,25 +2,27 @@
   <title>Short URL — ER Diagram</title>
   <defs>
     <style>
-      .card { fill: #161d2b; stroke-width: 2; }
-      .tname { fill: #0b1020; font-size: 20px; font-weight: 800; }
-      .tdesc { fill: #0b1020; font-size: 12.5px; }
-      .col { fill: #f1f5f9; font-size: 14px; font-family: Consolas, 'Courier New', monospace; }
-      .type { fill: #94a3b8; font-size: 12.5px; font-family: Consolas, 'Courier New', monospace; text-anchor: end; }
-      .note { fill: #64748b; font-size: 11px; }
-      .row { stroke: #263043; stroke-width: 1; }
-      .pk { stroke: #f1f5f9; stroke-width: 1.5; }
-      .fk { stroke: #f1f5f9; stroke-width: 1.5; stroke-dasharray: 4 3; }
-      .rel { fill: none; stroke: #e2e8f0; stroke-width: 2; }
-      .rellabel { fill: #f8fafc; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .card { fill: #ffffff; stroke-width: 2; }
+      .tname { fill: #000000; font-size: 20px; font-weight: 800; }
+      .tdesc { fill: #000000; font-size: 12.5px; }
+      .col { fill: #000000; font-size: 14px; font-family: Consolas, 'Courier New', monospace; }
+      .type { fill: #000000; font-size: 12.5px; font-family: Consolas, 'Courier New', monospace; text-anchor: end; }
+      .note { fill: #555555; font-size: 11px; }
+      .row { stroke: #cccccc; stroke-width: 1; }
+      .pk { stroke: #000000; stroke-width: 1.5; }
+      .fk { stroke: #000000; stroke-width: 1.5; stroke-dasharray: 4 3; }
+      .rel { fill: none; stroke: #000000; stroke-width: 2; }
+      .rellabel { fill: #000000; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .card { stroke: #000000; }
+      .bar { fill: #000000; }
     </style>
   </defs>
-  <rect width="1200" height="450" rx="24" fill="#0f1420"/>
-  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
-  <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — ER Diagram</text>
+  <rect width="1200" height="450" rx="24" fill="#ffffff"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#e0e0e0"/>
+  <text x="44" y="56" fill="#000000" font-size="30" font-weight="800">Short URL — ER Diagram</text>
   
-  <rect class="card" x="30" y="120" width="340" height="224" rx="14" stroke="#f59e0b"/>
-  <path d="M30 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#f59e0b"/>
+  <rect class="card" x="30" y="120" width="340" height="224" rx="14" stroke="#e0e0e0"/>
+  <path d="M30 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#e0e0e0"/>
   <text class="tname" x="48" y="152">users</text>
   <text class="tdesc" x="48" y="172">บัญชีผู้ใช้และสิทธิ์</text>
   <text class="col" x="48" y="205">id</text><text class="type" x="356" y="205">SERIAL</text>
@@ -36,8 +38,8 @@
   <text class="note" x="48" y="308">user | admin</text>
   <line class="row" x1="30" y1="312" x2="370" y2="312"/>
   <text class="col" x="48" y="333">created_at</text><text class="type" x="356" y="333">TIMESTAMPTZ</text>
-  <rect class="card" x="430" y="120" width="340" height="288" rx="14" stroke="#a855f7"/>
-  <path d="M430 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#a855f7"/>
+  <rect class="card" x="430" y="120" width="340" height="288" rx="14" stroke="#e0e0e0"/>
+  <path d="M430 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#e0e0e0"/>
   <text class="tname" x="448" y="152">urls</text>
   <text class="tdesc" x="448" y="172">ลิงก์ต้นฉบับคู่กับรหัสสั้น และเจ้าของ</text>
   <text class="col" x="448" y="205">id</text><text class="type" x="756" y="205">SERIAL</text>
@@ -57,8 +59,8 @@
   <text class="note" x="448" y="372">ว่าง = ไม่มีวันหมดอายุ</text>
   <line class="row" x1="430" y1="376" x2="770" y2="376"/>
   <text class="col" x="448" y="397">created_at</text><text class="type" x="756" y="397">TIMESTAMPTZ</text>
-  <rect class="card" x="830" y="120" width="340" height="288" rx="14" stroke="#22d3ee"/>
-  <path d="M830 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#22d3ee"/>
+  <rect class="card" x="830" y="120" width="340" height="288" rx="14" stroke="#e0e0e0"/>
+  <path d="M830 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#e0e0e0"/>
   <text class="tname" x="848" y="152">clicks</text>
   <text class="tdesc" x="848" y="172">การเปิดลิงก์ 1 แถว ต่อ 1 ครั้ง</text>
   <text class="col" x="848" y="205">id</text><text class="type" x="1156" y="205">BIGSERIAL</text>

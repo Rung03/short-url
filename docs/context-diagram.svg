@@ -2,21 +2,23 @@
   <title>Short URL — Context Diagram</title>
   <defs>
     <marker id="ctxArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#cbd5e1"/>
+      <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
     </marker>
     <style>
-      .ext { fill: #161d2b; stroke-width: 2; }
-      .et { fill: #f8fafc; font-size: 18px; font-weight: 700; }
-      .sys { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 2; }
-      .sysnum { fill: #0b1020; font-size: 16px; font-weight: 800; text-anchor: middle; }
-      .systxt { fill: #f8fafc; font-size: 18px; font-weight: 700; text-anchor: middle; }
-      .f { fill: none; stroke: #94a3b8; stroke-width: 1.6; marker-end: url(#ctxArrow); }
-      .fl { fill: #e2e8f0; font-size: 13px; }
+      .ext { fill: #ffffff; stroke-width: 2; }
+      .et { fill: #000000; font-size: 18px; font-weight: 700; }
+      .sys { fill: #ffffff; stroke: #000000; stroke-width: 2; }
+      .sysnum { fill: #000000; font-size: 16px; font-weight: 800; text-anchor: middle; }
+      .systxt { fill: #000000; font-size: 18px; font-weight: 700; text-anchor: middle; }
+      .f { fill: none; stroke: #000000; stroke-width: 1.6; marker-end: url(#ctxArrow); }
+      .fl { fill: #000000; font-size: 13px; }
+      .card { stroke: #000000; }
+      .bar { fill: #000000; }
     </style>
   </defs>
-  <rect width="1400" height="960" rx="24" fill="#0f1420"/>
-  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a78bfa"/>
-  <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — Context Diagram</text>
+  <rect width="1400" height="960" rx="24" fill="#ffffff"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#000000"/>
+  <text x="44" y="56" fill="#000000" font-size="30" font-weight="800">Short URL — Context Diagram</text>
   <g transform="translate(0 70)">
   
   <path class="f" d="M280 95 H620 V378"/>
@@ -49,14 +51,14 @@
   <text class="fl" x="638" y="660" text-anchor="end">รหัสลิงก์สั้น</text>
   <text class="fl" x="762" y="660" text-anchor="start">URL ปลายทาง</text>
   
-  <rect class="ext" x="60" y="60" width="220" height="70" rx="12" stroke="#38bdf8"/>
+  <rect class="ext" x="60" y="60" width="220" height="70" rx="12" stroke="#000000"/>
   <text class="et" x="170" y="102" text-anchor="middle">User</text>
-  <rect class="ext" x="1120" y="60" width="220" height="70" rx="12" stroke="#f472b6"/>
+  <rect class="ext" x="1120" y="60" width="220" height="70" rx="12" stroke="#000000"/>
   <text class="et" x="1230" y="102" text-anchor="middle">Admin</text>
-  <rect class="ext" x="590" y="780" width="220" height="70" rx="12" stroke="#4ade80"/>
+  <rect class="ext" x="590" y="780" width="220" height="70" rx="12" stroke="#000000"/>
   <text class="et" x="700" y="822" text-anchor="middle">Visitor</text>
   <rect class="sys" x="560" y="380" width="280" height="150" rx="14"/>
-  <path d="M560 394 a14 14 0 0 1 14 -14 h252 a14 14 0 0 1 14 14 v22 h-280 z" fill="#a855f7"/>
+  <path d="M560 394 a14 14 0 0 1 14 -14 h252 a14 14 0 0 1 14 14 v22 h-280 z" fill="#e0e0e0"/>
   <text class="sysnum" x="700" y="405">0</text>
   <text class="systxt" x="700" y="478">ระบบ Short URL</text>
   </g>
