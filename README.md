@@ -133,6 +133,7 @@ flowchart LR
 
 DFD Level 2 (กระบวนการ 4), Workflow, ตารางข้อมูลเข้า-ออกของแต่ละกระบวนการ, Data Dictionary และ Normalization ดูได้ที่ [docs/design.md](docs/design.md)
 DFD Level 0 + DFD Level 1 + ER Diagram แบบ PDF (A4 แนวนอน 3 หน้า): [docs/short-url-dfd-er.pdf](docs/short-url-dfd-er.pdf)
+DFD Level 0 + ER Diagram แบบ PDF (A4 แนวนอน 2 หน้า): [docs/short-url-level0-er.pdf](docs/short-url-level0-er.pdf)
 เอกสารส่งงานฉบับเต็ม (PDF 6 หน้า): [docs/short-url-report.pdf](docs/short-url-report.pdf)
 
 ## ER Diagram
