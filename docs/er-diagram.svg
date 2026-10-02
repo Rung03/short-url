@@ -16,7 +16,7 @@
     </style>
   </defs>
   <rect width="1200" height="450" rx="24" fill="#0f1420"/>
-  <rect x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
   <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — ER Diagram</text>
   
   <rect class="card" x="30" y="120" width="340" height="224" rx="14" stroke="#f59e0b"/>

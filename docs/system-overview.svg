@@ -212,7 +212,7 @@
     </style>
   </defs>
   <rect width="1600" height="1150" rx="24" fill="#0f1420"/>
-  <rect x="24" y="24" width="8" height="52" rx="4" fill="#a78bfa"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a78bfa"/>
   <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — DFD Level 0</text>
   
   <path class="f fb" d="M240.0 298 H292.2 V175 H707.7"/>
@@ -330,7 +330,7 @@
     </style>
   </defs>
   <rect width="1200" height="450" rx="24" fill="#0f1420"/>
-  <rect x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
   <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — ER Diagram</text>
   
   <rect class="card" x="30" y="120" width="340" height="224" rx="14" stroke="#f59e0b"/>
