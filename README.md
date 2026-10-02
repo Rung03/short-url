@@ -13,6 +13,7 @@
 - [ER Diagram](#er-diagram)
 - [โครงสร้างโปรเจกต์](#โครงสร้างโปรเจกต์)
 - [การติดตั้งและรันบนเครื่อง](#การติดตั้งและรันบนเครื่อง)
+- [ปัญหาที่พบบ่อย](#ปัญหาที่พบบ่อย)
 - [การ Deploy](#การ-deploy-แบบฟรี)
 - [API](#api)
 - [หลักการทำงาน](#หลักการทำงาน)
@@ -205,46 +206,230 @@ short-url/
 
 ## การติดตั้งและรันบนเครื่อง
 
-### สิ่งที่ต้องมี
+ภาพรวมขั้นตอน (ใช้เวลาประมาณ 15–20 นาทีสำหรับการติดตั้งครั้งแรก)
 
-- Node.js 18 ขึ้นไป
-- PostgreSQL 14 ขึ้นไป
+1. ติดตั้งโปรแกรมที่ต้องใช้ (Node.js, Git, PostgreSQL)
+2. ดาวน์โหลดโค้ด
+3. ตั้งค่า Backend
+4. สร้างฐานข้อมูลและตาราง
+5. รัน Backend
+6. ตั้งค่าและรัน Frontend
+7. ทดลองใช้งาน
 
-### 1. Clone โปรเจกต์
+> คำสั่งในคู่มือนี้ใช้ได้ทั้ง PowerShell / Terminal ของ Windows, macOS และ Linux
+> ยกเว้นที่ระบุว่าเป็นของระบบปฏิบัติการใดโดยเฉพาะ
+
+### ขั้นที่ 1: ติดตั้งโปรแกรมที่ต้องใช้
+
+| โปรแกรม | เวอร์ชัน | ดาวน์โหลด | หมายเหตุ |
+|---|---|---|---|
+| Node.js | 18 ขึ้นไป (แนะนำ 22 LTS) | [nodejs.org](https://nodejs.org) | ติดตั้งแล้วจะได้ `npm` มาด้วย |
+| Git | ล่าสุด | [git-scm.com](https://git-scm.com) | ใช้ดาวน์โหลดโค้ด (ข้ามได้ถ้าโหลดเป็นไฟล์ ZIP) |
+| PostgreSQL | 14 ขึ้นไป | [postgresql.org/download](https://www.postgresql.org/download/) | ระหว่างติดตั้ง **จดรหัสผ่านของ user `postgres` ไว้** และใช้พอร์ต `5432` ตามค่าเริ่มต้น โปรแกรม pgAdmin ติดมาด้วย ใช้ดูข้อมูลในฐานข้อมูลได้ |
+
+ตรวจว่าติดตั้งสำเร็จ (เปิด Terminal ใหม่หลังติดตั้งเสร็จ):
+
+```bash
+node -v
+```
+
+```bash
+npm -v
+```
+
+```bash
+git --version
+```
+
+ต้องเห็นเลขเวอร์ชัน เช่น `v22.x.x` ถ้าขึ้นว่าไม่รู้จักคำสั่ง ให้ปิดแล้วเปิด Terminal ใหม่ หรือรีสตาร์ตเครื่อง
+
+ตรวจว่า PostgreSQL ทำงานอยู่:
+
+- **Windows:** กด `Win + R` พิมพ์ `services.msc` หา `postgresql-x64-<เวอร์ชัน>` สถานะต้องเป็น **Running** ถ้าไม่ใช่ให้คลิกขวาแล้วเลือก **Start**
+- **macOS / Linux:** รัน `pg_isready` ต้องได้ข้อความ `accepting connections`
+
+### ขั้นที่ 2: ดาวน์โหลดโค้ด
 
 ```bash
 git clone https://github.com/Rung03/short-url.git
+```
+
+```bash
 cd short-url
 ```
 
-### 2. รัน Backend
+หรือดาวน์โหลดไฟล์ ZIP จากหน้า GitHub (ปุ่ม **Code → Download ZIP**) แล้วแตกไฟล์ จากนั้นเปิด Terminal ที่โฟลเดอร์ที่แตกออกมา
+
+ในโฟลเดอร์จะมี `backend/` (API) และ `frontend/` (หน้าเว็บ) ต้องติดตั้งและรันแยกกันทั้งสองส่วน
+
+### ขั้นที่ 3: ตั้งค่า Backend
+
+เข้าโฟลเดอร์ backend แล้วติดตั้ง package:
 
 ```bash
 cd backend
-npm install
-cp .env.example .env          # ใส่ DB_PASSWORD ของ user postgres
-npm run db:init               # สร้างฐานข้อมูล shorturl และตาราง (ไม่มีข้อมูลตัวอย่าง)
-npm run dev                   # http://localhost:4000
 ```
 
-`npm run db:init` สร้างฐานข้อมูลให้เองถ้ายังไม่มี และรันซ้ำได้โดยไม่ลบข้อมูลเดิม
+```bash
+npm install
+```
 
-ตรวจการเชื่อมต่อฐานข้อมูลที่ http://localhost:4000/api/health ต้องได้ผลลัพธ์
+คัดลอกไฟล์ตั้งค่าตัวอย่าง:
+
+```bash
+cp .env.example .env
+```
+
+(ถ้าใช้ Command Prompt ของ Windows ให้ใช้ `copy .env.example .env` แทน)
+
+เปิดไฟล์ `backend/.env` ด้วยโปรแกรมแก้ไขข้อความ (เช่น VS Code หรือ Notepad) แล้วแก้ค่าเหล่านี้:
+
+| ตัวแปร | ต้องแก้เป็น |
+|---|---|
+| `DB_PASSWORD` | รหัสผ่านของ user `postgres` ที่ตั้งไว้ตอนติดตั้ง PostgreSQL |
+| `ADMIN_USERNAME` | ชื่อผู้ดูแลระบบหลัก เช่น `admin` (a-z, 0-9, `_` `.` `-` ยาว 3–30 ตัว) |
+| `ADMIN_PASSWORD` | รหัสผ่านผู้ดูแลระบบหลัก **อย่างน้อย 8 ตัวอักษร** |
+| `JWT_SECRET` | ข้อความสุ่มยาวๆ (ดูวิธีสร้างด้านล่าง) |
+| `IP_SALT` | ข้อความสุ่มยาวๆ อีกชุด (ห้ามซ้ำกับ `JWT_SECRET`) |
+
+ค่าอื่นใช้ตามตัวอย่างได้เลย
+
+สร้างข้อความสุ่มสำหรับ `JWT_SECRET` และ `IP_SALT` (รันสองครั้ง ได้คนละค่า):
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+ตัวอย่างไฟล์ `backend/.env` ที่ตั้งค่าแล้ว:
+
+```env
+PORT=4000
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=รหัสผ่าน postgres ของคุณ
+DB_NAME=shorturl
+DB_SSL=false
+BASE_URL=http://localhost:4000
+CORS_ORIGIN=http://localhost:5173
+IP_SALT=ข้อความสุ่มชุดที่ 1
+STATS_TIMEZONE=Asia/Bangkok
+JWT_SECRET=ข้อความสุ่มชุดที่ 2
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=รหัสผ่าน admin อย่างน้อย 8 ตัว
+```
+
+> ไฟล์ `.env` มีรหัสผ่าน ห้ามอัปโหลดขึ้น GitHub (ไฟล์ `.gitignore` กันไว้ให้แล้ว)
+
+### ขั้นที่ 4: สร้างฐานข้อมูลและตาราง
+
+ยังอยู่ในโฟลเดอร์ `backend`:
+
+```bash
+npm run db:init
+```
+
+คำสั่งนี้จะสร้างฐานข้อมูลชื่อ `shorturl` (ถ้ายังไม่มี) และสร้างตาราง `users`, `urls`, `clicks` ผลลัพธ์ที่ถูกต้อง:
+
+```
+Created database "shorturl".
+Database "shorturl" ready.
+
+Table: clicks
+...
+Table: urls
+...
+Table: users
+...
+```
+
+- ไม่มีข้อมูลตัวอย่าง ตารางจะว่าง
+- รันซ้ำได้โดยไม่ลบข้อมูลเดิม
+- ถ้าไม่ได้รันขั้นนี้ Backend ก็จะสร้างตารางให้เองตอนเริ่มทำงาน แต่ต้องมีฐานข้อมูล `shorturl` อยู่ก่อน
+
+### ขั้นที่ 5: รัน Backend
+
+```bash
+npm run dev
+```
+
+ผลลัพธ์ที่ถูกต้อง:
+
+```
+[nodemon] starting `node src/index.js`
+API running on http://localhost:4000
+```
+
+ตอนเริ่มครั้งแรก ระบบจะสร้างบัญชีผู้ดูแลระบบหลักจาก `ADMIN_USERNAME` / `ADMIN_PASSWORD` ให้อัตโนมัติ
+
+ตรวจการเชื่อมต่อ: เปิดเบราว์เซอร์ไปที่ http://localhost:4000/api/health ต้องได้
 
 ```json
 { "status": "ok", "database": "connected" }
 ```
 
-### 3. รัน Frontend (เปิด Terminal ใหม่)
+**ปล่อย Terminal นี้ไว้** (Backend ต้องรันอยู่ตลอดที่ใช้งาน) ถ้าจะหยุดให้กด `Ctrl + C`
+
+### ขั้นที่ 6: ตั้งค่าและรัน Frontend
+
+**เปิด Terminal ใหม่อีกหน้าต่าง** ไปที่โฟลเดอร์โปรเจกต์ แล้ว:
 
 ```bash
 cd frontend
-npm install
-cp .env.example .env          # VITE_API_URL=http://localhost:4000
-npm run dev                   # http://localhost:5173
 ```
 
-เปิด http://localhost:5173 เพื่อใช้งาน
+```bash
+npm install
+```
+
+```bash
+cp .env.example .env
+```
+
+ไฟล์ `frontend/.env` มีค่าเดียว ใช้ตามตัวอย่างได้เลยเมื่อรันบนเครื่อง:
+
+```env
+VITE_API_URL=http://localhost:4000
+```
+
+รันหน้าเว็บ:
+
+```bash
+npm run dev
+```
+
+ผลลัพธ์ที่ถูกต้อง:
+
+```
+VITE v8.x.x  ready in xxx ms
+➜  Local:   http://localhost:5173/
+```
+
+### ขั้นที่ 7: ทดลองใช้งาน
+
+1. เปิด http://localhost:5173 ระบบจะพาไปหน้า Login
+2. **เข้าสู่ระบบเป็นผู้ดูแลระบบ:** แท็บ **Login** ใส่ `ADMIN_USERNAME` / `ADMIN_PASSWORD` ที่ตั้งไว้ใน `backend/.env`
+3. **สร้างผู้ใช้ทั่วไป:** กด **Logout** แล้วไปแท็บ **Register** สมัครบัญชีใหม่
+4. **ย่อลิงก์:** แท็บ **Shorten** วาง URL แล้วกด **สร้างลิงก์สั้น** จะได้ลิงก์สั้นและ QR Code
+5. **ทดสอบลิงก์:** คลิกลิงก์สั้น (หรือสแกน QR ด้วยมือถือที่ต่อ Wi-Fi เดียวกัน ดูหมายเหตุด้านล่าง) ต้องไปที่ URL ต้นฉบับ
+6. **ดูสถิติ:** แท็บ **Dashboard** จะเห็นจำนวนการเปิดและกราฟ
+7. **จัดการผู้ใช้:** เข้าสู่ระบบด้วย admin แล้วไปแท็บ **Users**
+
+> สแกน QR ด้วยมือถือไม่ได้เมื่อรันบนเครื่อง เพราะลิงก์เป็น `localhost` (มือถือมองไม่เห็นเครื่องเรา)
+> ถ้าต้องการทดสอบด้วยมือถือ ให้แก้ `BASE_URL` ใน `backend/.env` เป็น IP ของเครื่องในวง Wi-Fi เช่น `http://192.168.1.10:4000` แล้วรีสตาร์ต Backend
+
+### คำสั่งที่ใช้บ่อย
+
+| โฟลเดอร์ | คำสั่ง | ใช้ทำอะไร |
+|---|---|---|
+| `backend` | `npm run dev` | รัน API แบบพัฒนา (รีสตาร์ตเองเมื่อแก้โค้ด) |
+| `backend` | `npm start` | รัน API แบบ production |
+| `backend` | `npm run db:init` | สร้างฐานข้อมูลและตาราง |
+| `frontend` | `npm run dev` | รันหน้าเว็บแบบพัฒนา |
+| `frontend` | `npm run build` | build หน้าเว็บสำหรับ deploy (ได้โฟลเดอร์ `dist/`) |
+| `frontend` | `npm run lint` | ตรวจโค้ด |
+
+> แก้ไฟล์ `.env` แล้วต้อง **หยุดด้วย `Ctrl + C` แล้วรันใหม่** ทั้ง Backend และ Frontend เพราะค่าใน `.env` ถูกอ่านตอนเริ่มเท่านั้น
 
 ### ตัวแปร .env
 
@@ -258,36 +443,128 @@ Backend (`backend/.env`)
 | `DB_NAME` | `shorturl` | ชื่อฐานข้อมูล |
 | `DATABASE_URL` | `postgresql://user:pass@host/db?sslmode=require` | ใช้แทน `DB_*` เมื่อ deploy (Neon, Supabase) |
 | `DB_SSL` | `false` | ตั้งเป็น `true` เมื่อใช้ Neon หรือ Supabase |
-| `BASE_URL` | `http://localhost:4000` | โดเมนที่ใช้ประกอบเป็น Short URL |
-| `CORS_ORIGIN` | `http://localhost:5173` | โดเมนของ Frontend ที่อนุญาต (คั่นด้วย `,` ได้) |
+| `BASE_URL` | `http://localhost:4000` | โดเมนที่ใช้ประกอบเป็น Short URL ต้องตรงกับ `PORT` (บน Render ไม่ต้องตั้ง) |
+| `CORS_ORIGIN` | `http://localhost:5173` | โดเมนของ Frontend ที่อนุญาต (คั่นด้วย `,` ได้, ห้ามมี `/` ท้าย) |
 | `IP_SALT` | ข้อความสุ่ม | ใช้ hash IP ของผู้เข้าชม |
 | `STATS_TIMEZONE` | `Asia/Bangkok` | เขตเวลาที่ใช้นับสถิติรายวัน |
 | `JWT_SECRET` | ข้อความสุ่มยาวๆ | ใช้เซ็น token เข้าสู่ระบบ ถ้าเปลี่ยน ทุกคนต้องเข้าสู่ระบบใหม่ |
 | `ADMIN_USERNAME` | `admin` | ชื่อผู้ดูแลระบบหลัก สร้างให้อัตโนมัติตอนเซิร์ฟเวอร์เริ่ม |
-| `ADMIN_PASSWORD` | รหัสผ่าน 8 ตัวขึ้นไป | รหัสผ่านผู้ดูแลระบบหลัก เปลี่ยนค่านี้เพื่อรีเซ็ตรหัสผ่าน admin หลัก |
+| `ADMIN_PASSWORD` | รหัสผ่าน 8 ตัวขึ้นไป | รหัสผ่านผู้ดูแลระบบหลัก เปลี่ยนค่านี้แล้วรีสตาร์ตเพื่อรีเซ็ตรหัสผ่าน admin หลัก |
 
 Frontend (`frontend/.env`)
 
 | ตัวแปร | ตัวอย่าง | คำอธิบาย |
 |---|---|---|
-| `VITE_API_URL` | `http://localhost:4000` | ที่อยู่ของ Backend |
+| `VITE_API_URL` | `http://localhost:4000` | ที่อยู่ของ Backend (ห้ามมี `/` ท้าย) |
+
+### ปัญหาที่พบบ่อย
+
+| อาการ / ข้อความ error | สาเหตุ | วิธีแก้ |
+|---|---|---|
+| `password authentication failed for user "postgres"` | `DB_PASSWORD` ใน `backend/.env` ไม่ถูก | ใส่รหัสผ่าน postgres ที่ถูกต้อง ลองเข้าด้วย pgAdmin เพื่อยืนยันรหัส |
+| `connect ECONNREFUSED 127.0.0.1:5432` | PostgreSQL ไม่ได้ทำงาน | เปิด service PostgreSQL (ดูขั้นที่ 1) |
+| `/api/health` ได้ `"database": "disconnected"` | Backend ต่อฐานข้อมูลไม่ได้ | ดูข้อความ error ใน Terminal ของ Backend แล้วแก้ตามสองข้อด้านบน |
+| `database "shorturl" does not exist` | ยังไม่ได้สร้างฐานข้อมูล | รัน `npm run db:init` ในโฟลเดอร์ `backend` |
+| `listen EADDRINUSE: address already in use :::4000` | มีโปรแกรมอื่นใช้พอร์ต 4000 อยู่ | ปิดโปรแกรมนั้น หรือเปลี่ยนพอร์ต 3 ที่ให้ตรงกัน: `PORT` และ `BASE_URL` ใน `backend/.env`, `VITE_API_URL` ใน `frontend/.env` |
+| ลิงก์สั้นเปิดแล้วขึ้น "ไม่พบลิงก์" หรือเปิดไม่ได้ | `BASE_URL` ไม่ตรงกับที่อยู่ Backend จริง (เช่น เปลี่ยน `PORT` แต่ไม่ได้เปลี่ยน `BASE_URL`) | แก้ `BASE_URL` ให้ตรงกับที่อยู่ Backend แล้วรีสตาร์ต Backend |
+| หน้าเว็บขึ้น "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้" | Backend ไม่ได้รัน หรือ `VITE_API_URL` ผิด | ตรวจว่า Terminal ของ Backend ยังรันอยู่ และ `VITE_API_URL` ถูกต้อง แล้วรัน Frontend ใหม่ |
+| Console ของเบราว์เซอร์ขึ้น `blocked by CORS policy` | `CORS_ORIGIN` ไม่ตรงกับที่อยู่หน้าเว็บ | ตั้ง `CORS_ORIGIN` ให้ตรงกับที่อยู่หน้าเว็บทุกตัวอักษร (รวม `http://` และพอร์ต ไม่มี `/` ท้าย) แล้วรีสตาร์ต Backend |
+| Login ด้วย admin ไม่ได้ | ไม่ได้ตั้ง `ADMIN_USERNAME` / `ADMIN_PASSWORD` หรือรหัสสั้นกว่า 8 ตัว | ดูใน Terminal ของ Backend ถ้าขึ้น `ADMIN_USERNAME / ADMIN_PASSWORD not set` ให้ตั้งค่าแล้วรีสตาร์ต Backend |
+| Login ผิดแล้วขึ้น "กรุณารอ 15 นาที" | ใส่รหัสผิด 5 ครั้งติดกัน | รอ 15 นาที หรือรีสตาร์ต Backend (ตัวนับจะเริ่มใหม่) |
+| `vite: command not found` หรือ `nodemon: command not found` | ยังไม่ได้ `npm install` ในโฟลเดอร์นั้น | รัน `npm install` ในโฟลเดอร์ `frontend` / `backend` |
+| `npm` ไม่รู้จักคำสั่ง | ยังไม่ได้ติดตั้ง Node.js หรือยังไม่ได้เปิด Terminal ใหม่ | ติดตั้ง Node.js แล้วเปิด Terminal ใหม่ |
+| PowerShell ขึ้น `running scripts is disabled on this system` | Windows ปิดการรันสคริปต์ | ใช้ Command Prompt แทน หรือรัน `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` ใน PowerShell |
 
 ## การ Deploy แบบฟรี
 
-1. **Database (Neon)** สร้างโปรเจกต์ที่ [neon.tech](https://neon.tech) แล้วคัดลอก connection string
-   (ไม่ต้องสร้างตารางเอง Backend สร้างให้อัตโนมัติตอนเริ่มทำงาน)
+ใช้ 3 บริการแบบฟรี: **Neon** (ฐานข้อมูล), **Render** (Backend), **Vercel** (Frontend) ทั้งสามเข้าสู่ระบบด้วยบัญชี GitHub ได้
 
-2. **Backend (Render)** ที่ [render.com](https://render.com) เลือก **New → Blueprint** แล้วเลือก repository นี้
-   - Render อ่านค่าจาก [render.yaml](render.yaml) ให้เอง
-   - ใส่ `DATABASE_URL` = connection string ของ Neon
-   - ใส่ `ADMIN_USERNAME` และ `ADMIN_PASSWORD` ของผู้ดูแลระบบหลัก (`JWT_SECRET` Render สุ่มให้)
-   - `BASE_URL` ไม่ต้องใส่ ระบบใช้โดเมนของ Render ให้อัตโนมัติ
+### ขั้นที่ 1: เอาโค้ดขึ้น GitHub
 
-3. **Frontend (Vercel)** Import repository ที่ [vercel.com](https://vercel.com)
-   - Root Directory: `frontend`
-   - Environment: `VITE_API_URL` = โดเมนของ Render
+Fork หรือ push repository นี้ขึ้น GitHub ของตัวเอง (Render และ Vercel ดึงโค้ดจาก GitHub)
 
-4. กลับไปที่ Render แก้ `CORS_ORIGIN` จาก `*` เป็นโดเมนของ Vercel เพื่อให้เฉพาะหน้าเว็บของเราเรียก API ได้
+### ขั้นที่ 2: สร้างฐานข้อมูลบน Neon
+
+1. สมัคร/เข้าสู่ระบบที่ [neon.tech](https://neon.tech)
+2. กด **New Project** ตั้งชื่อ เช่น `short-url` เลือก Region **Singapore** (ใกล้ไทยที่สุด)
+3. กด **Connect** แล้วกด **Show password** ก่อน จากนั้นคัดลอก **Connection string** (ขึ้นต้นด้วย `postgresql://`)
+
+ไม่ต้องสร้างตารางเอง Backend สร้างให้อัตโนมัติตอนเริ่มทำงาน
+
+> ถ้าคัดลอกตอนรหัสผ่านยังเป็น `********` Backend จะต่อฐานข้อมูลไม่ได้ (`password authentication failed`)
+
+### ขั้นที่ 3: Deploy Backend บน Render
+
+1. สมัคร/เข้าสู่ระบบที่ [render.com](https://render.com)
+2. ไปที่ **Account Settings → Git Providers** เชื่อม GitHub และอนุญาตให้เข้าถึง repository นี้ (ถ้าไม่เชื่อม Render จะไม่ deploy อัตโนมัติเมื่อ push)
+3. เลือกวิธีสร้างอย่างใดอย่างหนึ่ง
+
+**แบบ A: Blueprint (แนะนำ)**
+- กด **New → Blueprint** แล้วเลือก repository นี้
+- Render อ่านค่าจาก [render.yaml](render.yaml) ให้เอง ทั้ง Root Directory, คำสั่ง build/start, Region และตัวแปรส่วนใหญ่
+- กรอก `DATABASE_URL` (connection string จาก Neon), `ADMIN_USERNAME`, `ADMIN_PASSWORD` แล้วกด **Apply**
+
+**แบบ B: สร้าง Web Service เอง**
+- กด **New → Web Service** แล้วเลือก repository นี้ ตั้งค่าดังนี้:
+
+| ช่อง | ค่า |
+|---|---|
+| Name | ชื่อสั้นๆ (กลายเป็นโดเมน `<ชื่อ>.onrender.com`) |
+| Region | Singapore |
+| Root Directory | `backend` |
+| Runtime | Node |
+| Build Command | `npm install` |
+| Start Command | `npm start` |
+| Instance Type | Free |
+
+- ในส่วน **Environment Variables** เพิ่ม:
+
+| Key | Value |
+|---|---|
+| `DATABASE_URL` | connection string จาก Neon |
+| `DB_SSL` | `true` |
+| `JWT_SECRET` | ข้อความสุ่มยาวๆ |
+| `IP_SALT` | ข้อความสุ่มยาวๆ อีกชุด |
+| `ADMIN_USERNAME` | ชื่อผู้ดูแลระบบหลัก |
+| `ADMIN_PASSWORD` | รหัสผ่านผู้ดูแลระบบหลัก (อย่างน้อย 8 ตัว) |
+| `CORS_ORIGIN` | ใส่ `*` ไปก่อน แล้วแก้ในขั้นที่ 5 |
+| `STATS_TIMEZONE` | `Asia/Bangkok` |
+| `NODE_VERSION` | `22` |
+
+4. รอ build เสร็จ ใน **Logs** ต้องเห็น `API running on ...` และ `Your service is live`
+5. คัดลอกโดเมนของ service (เช่น `https://xxxx.onrender.com`) แล้วเปิด `https://xxxx.onrender.com/api/health` ต้องได้ `"database": "connected"`
+
+`BASE_URL` ไม่ต้องตั้ง ระบบใช้โดเมนของ Render ให้อัตโนมัติ
+
+### ขั้นที่ 4: Deploy Frontend บน Vercel
+
+1. สมัคร/เข้าสู่ระบบที่ [vercel.com](https://vercel.com)
+2. กด **Add New → Project** แล้ว Import repository นี้
+3. ตั้งค่า:
+
+| ช่อง | ค่า |
+|---|---|
+| Root Directory | `frontend` (สำคัญ ถ้าไม่ตั้งจะ build ไม่ผ่าน `vite: command not found`) |
+| Framework Preset | Vite (เลือกให้อัตโนมัติ) |
+| Environment Variables | `VITE_API_URL` = โดเมนของ Render จากขั้นที่ 3 (ไม่มี `/` ท้าย) |
+
+4. กด **Deploy** แล้วคัดลอกโดเมนที่ได้ (เช่น `https://xxxx.vercel.app`)
+
+> แก้ `VITE_API_URL` ภายหลัง ต้องกด **Deployments → ⋯ → Redeploy** ด้วย เพราะค่านี้ถูกใส่ลงในหน้าเว็บตอน build
+
+### ขั้นที่ 5: จำกัดให้เฉพาะหน้าเว็บของเราเรียก API ได้
+
+กลับไปที่ Render → service ของ Backend → **Environment** แก้ `CORS_ORIGIN` จาก `*` เป็นโดเมนของ Vercel เช่น `https://xxxx.vercel.app` (ไม่มี `/` ท้าย) แล้วกด **Save**
+
+### ขั้นที่ 6: ตรวจสอบ
+
+- [ ] เปิดโดเมน Vercel แล้วเห็นหน้า Login
+- [ ] เข้าสู่ระบบด้วย `ADMIN_USERNAME` / `ADMIN_PASSWORD` ได้
+- [ ] สร้างลิงก์สั้นได้ และลิงก์ขึ้นต้นด้วยโดเมนของ Render
+- [ ] คลิกลิงก์สั้นหรือสแกน QR แล้วไปที่ URL ต้นฉบับ
+- [ ] Dashboard แสดงจำนวนการเปิดเพิ่มขึ้น
+
+> Render แบบฟรีจะหยุดทำงานเมื่อไม่มีการใช้งานประมาณ 15 นาที การเปิดครั้งถัดไปต้องรอ 30–50 วินาที
 
 ## API
 
