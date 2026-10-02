@@ -208,8 +208,7 @@
       .sn { fill: #f8fafc; font-size: 16px; font-family: Consolas, 'Courier New', monospace; }
       .f { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-linejoin: miter; marker-end: url(#dfdArrow); }
       .fb { marker-start: url(#dfdArrow); }
-      .pill { fill: #0f1420; stroke: #334155; stroke-width: 1; }
-      .fl { fill: #e2e8f0; font-size: 11.5px; text-anchor: middle; }
+      .fl { fill: #e2e8f0; font-size: 12px; text-anchor: middle; paint-order: stroke; stroke: #0f1420; stroke-width: 4px; stroke-linejoin: round; }
       .lg { fill: #cbd5e1; font-size: 13px; }
     </style>
   </defs>
@@ -243,48 +242,27 @@
   <path class="f" d="M1260.0 935 H1039.0 V921 H1024.0 A6 6 0 0 0 1012.0 921 H809.6"/>
   <path class="f" d="M813.0 1068 H1060.0 V965 H1260.0"/>
   
-  <rect class="pill" x="442.0" y="185.5" width="188.8" height="19" rx="9.5"/>
-  <text class="fl" x="536.4" y="199.0">URL, วันหมดอายุ / Short URL</text>
-  <rect class="pill" x="488.2" y="325.5" width="163.2" height="19" rx="9.5"/>
-  <text class="fl" x="569.8" y="339.0">Short URL / รูป QR Code</text>
-  <rect class="pill" x="418.5" y="445.5" width="195.2" height="19" rx="9.5"/>
-  <text class="fl" x="516.1" y="459.0">ชื่อผู้ใช้, รหัสผ่าน / Token</text>
-  <rect class="pill" x="404.2" y="585.5" width="201.6" height="19" rx="9.5"/>
-  <text class="fl" x="505.0" y="599.0">คำขอรายงาน / Dashboard ตัวเอง</text>
-  <rect class="pill" x="405.8" y="725.5" width="176.0" height="19" rx="9.5"/>
-  <text class="fl" x="493.8" y="739.0">เปิด/ปิด/ลบลิงก์ของตัวเอง</text>
-  <rect class="pill" x="429.6" y="485.5" width="195.2" height="19" rx="9.5"/>
-  <text class="fl" x="527.2" y="499.0">ชื่อผู้ใช้, รหัสผ่าน / Token</text>
-  <rect class="pill" x="442.2" y="625.5" width="214.4" height="19" rx="9.5"/>
-  <text class="fl" x="549.4" y="639.0">คำขอรายงาน / Dashboard ทั้งระบบ</text>
-  <rect class="pill" x="501.1" y="765.5" width="163.2" height="19" rx="9.5"/>
-  <text class="fl" x="582.7" y="779.0">เปิด/ปิด/ลบลิงก์ใดก็ได้</text>
-  <rect class="pill" x="481.6" y="885.5" width="220.8" height="19" rx="9.5"/>
-  <text class="fl" x="592.0" y="899.0">จัดการผู้ใช้ / รายชื่อพร้อมสถิติ</text>
-  <rect class="pill" x="470.7" y="1040.5" width="176.0" height="19" rx="9.5"/>
-  <text class="fl" x="558.7" y="1054.0">short_code / Redirect 302</text>
-  <rect class="pill" x="1049.2" y="540.5" width="137.6" height="19" rx="9.5"/>
-  <text class="fl" x="1118.0" y="554.0">ลิงก์ใหม่ + เจ้าของ</text>
-  <rect class="pill" x="1011.8" y="570.5" width="86.4" height="19" rx="9.5"/>
-  <text class="fl" x="1055.0" y="584.0">รายการลิงก์</text>
-  <rect class="pill" x="1051.5" y="600.5" width="112.0" height="19" rx="9.5"/>
-  <text class="fl" x="1107.5" y="614.0">สถานะ / ลบลิงก์</text>
-  <rect class="pill" x="1056.5" y="630.5" width="144.0" height="19" rx="9.5"/>
-  <text class="fl" x="1128.5" y="644.0">จำนวนลิงก์ / ลบลิงก์</text>
-  <rect class="pill" x="1073.4" y="660.5" width="131.2" height="19" rx="9.5"/>
-  <text class="fl" x="1139.0" y="674.0">URL ต้นฉบับ, สถานะ</text>
-  <rect class="pill" x="991.2" y="275.5" width="169.6" height="19" rx="9.5"/>
-  <text class="fl" x="1076.0" y="289.0">บัญชีใหม่ / hash, สิทธิ์</text>
-  <rect class="pill" x="1009.0" y="305.5" width="176.0" height="19" rx="9.5"/>
-  <text class="fl" x="1097.0" y="319.0">สิทธิ์, รหัสผ่าน, ลบบัญชี</text>
-  <rect class="pill" x="1036.9" y="865.5" width="99.2" height="19" rx="9.5"/>
-  <text class="fl" x="1086.5" y="879.0">ข้อมูลการเปิด</text>
-  <rect class="pill" x="1009.5" y="895.5" width="112.0" height="19" rx="9.5"/>
-  <text class="fl" x="1065.5" y="909.0">ลบข้อมูลการเปิด</text>
-  <rect class="pill" x="1103.1" y="925.5" width="92.8" height="19" rx="9.5"/>
-  <text class="fl" x="1149.5" y="939.0">จำนวนการเปิด</text>
-  <rect class="pill" x="1110.4" y="955.5" width="99.2" height="19" rx="9.5"/>
-  <text class="fl" x="1160.0" y="969.0">ข้อมูลการเปิด</text>
+  <text class="fl" x="536.4" y="190.0">URL ต้นฉบับ, วันหมดอายุ / Short URL</text>
+  <text class="fl" x="569.8" y="330.0">Short URL / รูป QR Code</text>
+  <text class="fl" x="516.1" y="450.0">ข้อมูลเข้าสู่ระบบ / Token</text>
+  <text class="fl" x="505.0" y="590.0">เงื่อนไขรายงาน / รายงานของตัวเอง</text>
+  <text class="fl" x="493.8" y="730.0">สถานะลิงก์ของตัวเอง</text>
+  <text class="fl" x="527.2" y="490.0">ข้อมูลเข้าสู่ระบบ / Token</text>
+  <text class="fl" x="549.4" y="630.0">เงื่อนไขรายงาน / รายงานทั้งระบบ</text>
+  <text class="fl" x="582.7" y="770.0">สถานะลิงก์ของทุกคน</text>
+  <text class="fl" x="592.0" y="890.0">ข้อมูลสิทธิ์ผู้ใช้ / รายชื่อผู้ใช้</text>
+  <text class="fl" x="558.7" y="1045.0">รหัสลิงก์สั้น / URL ปลายทาง</text>
+  <text class="fl" x="1118.0" y="545.0">ข้อมูลลิงก์ใหม่</text>
+  <text class="fl" x="1055.0" y="575.0">รายการลิงก์</text>
+  <text class="fl" x="1107.5" y="605.0">สถานะลิงก์</text>
+  <text class="fl" x="1128.5" y="635.0">จำนวนลิงก์ / ลิงก์ของผู้ใช้</text>
+  <text class="fl" x="1139.0" y="665.0">URL ต้นฉบับ, สถานะลิงก์</text>
+  <text class="fl" x="1076.0" y="280.0">ข้อมูลบัญชี / รหัสผ่าน hash</text>
+  <text class="fl" x="1097.0" y="310.0">รายชื่อผู้ใช้ / สิทธิ์, รหัสผ่านใหม่</text>
+  <text class="fl" x="1086.5" y="870.0">ข้อมูลการเปิด</text>
+  <text class="fl" x="1065.5" y="900.0">ข้อมูลการเปิดที่ลบ</text>
+  <text class="fl" x="1149.5" y="930.0">จำนวนการเปิด</text>
+  <text class="fl" x="1160.0" y="960.0">ข้อมูลการเปิด</text>
   
   <rect class="ext" x="40" y="285" width="200" height="90" rx="12" stroke="#38bdf8"/>
   <circle cx="72" cy="322" r="9" fill="#38bdf8"/>
