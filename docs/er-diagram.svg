@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" font-family="'Segoe UI', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, sans-serif">
+  <title>Short URL — ER Diagram</title>
+  <defs>
+    <style>
+      .card { fill: #161d2b; stroke-width: 2; }
+      .tname { fill: #0f1420; font-size: 20px; font-weight: 800; }
+      .tdesc { fill: #0f1420; font-size: 12.5px; }
+      .col { fill: #f1f5f9; font-size: 14px; font-family: Consolas, 'Courier New', monospace; }
+      .type { fill: #94a3b8; font-size: 12.5px; font-family: Consolas, 'Courier New', monospace; text-anchor: end; }
+      .note { fill: #64748b; font-size: 11px; }
+      .row { stroke: #263043; stroke-width: 1; }
+      .key { font-size: 10.5px; font-weight: 700; text-anchor: middle; fill: #0f1420; }
+      .rel { fill: none; stroke: #e2e8f0; stroke-width: 2; }
+      .rellabel { fill: #f8fafc; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .relsub { fill: #94a3b8; font-size: 11.5px; text-anchor: middle; }
+      .legend { fill: #cbd5e1; font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="640" rx="24" fill="#0f1420"/>
+  <rect x="24" y="24" width="8" height="52" rx="4" fill="#a855f7"/>
+  <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — ER Diagram</text>
+  <text x="44" y="82" fill="#cbd5e1" font-size="14">PostgreSQL · 3 ตาราง · Normalization ถึง 3NF</text>
+
+  <!-- ================= USERS ================= -->
+  <g>
+    <rect class="card" x="30" y="120" width="340" height="224" rx="14" stroke="#f59e0b"/>
+    <path d="M30 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#f59e0b"/>
+    <text class="tname" x="48" y="152">users</text>
+    <text class="tdesc" x="48" y="172">บัญชีผู้ใช้และสิทธิ์</text>
+
+    <!-- rows: y = 184 + i*32 -->
+    <line class="row" x1="30" y1="216" x2="370" y2="216"/>
+    <line class="row" x1="30" y1="248" x2="370" y2="248"/>
+    <line class="row" x1="30" y1="280" x2="370" y2="280"/>
+    <line class="row" x1="30" y1="312" x2="370" y2="312"/>
+
+    <rect x="42" y="191" width="28" height="18" rx="4" fill="#facc15"/><text class="key" x="56" y="204">PK</text>
+    <text class="col" x="80" y="205">id</text><text class="type" x="356" y="205">SERIAL</text>
+
+    <rect x="42" y="223" width="28" height="18" rx="4" fill="#4ade80"/><text class="key" x="56" y="236">UK</text>
+    <text class="col" x="80" y="237">username</text><text class="type" x="356" y="237">VARCHAR(30)</text>
+
+    <text class="col" x="80" y="265">password_hash</text><text class="type" x="356" y="265">VARCHAR(100)</text>
+    <text class="note" x="80" y="276">bcrypt hash ไม่เก็บรหัสจริง</text>
+
+    <text class="col" x="80" y="297">role</text><text class="type" x="356" y="297">VARCHAR(10)</text>
+    <text class="note" x="80" y="308">user | admin</text>
+
+    <text class="col" x="80" y="333">created_at</text><text class="type" x="356" y="333">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- ================= URLS ================= -->
+  <g>
+    <rect class="card" x="430" y="120" width="340" height="288" rx="14" stroke="#a855f7"/>
+    <path d="M430 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#a855f7"/>
+    <text class="tname" x="448" y="152">urls</text>
+    <text class="tdesc" x="448" y="172">ลิงก์ต้นฉบับคู่กับรหัสสั้น และเจ้าของ</text>
+
+    <line class="row" x1="430" y1="216" x2="770" y2="216"/>
+    <line class="row" x1="430" y1="248" x2="770" y2="248"/>
+    <line class="row" x1="430" y1="280" x2="770" y2="280"/>
+    <line class="row" x1="430" y1="312" x2="770" y2="312"/>
+    <line class="row" x1="430" y1="344" x2="770" y2="344"/>
+    <line class="row" x1="430" y1="376" x2="770" y2="376"/>
+
+    <rect x="442" y="191" width="28" height="18" rx="4" fill="#facc15"/><text class="key" x="456" y="204">PK</text>
+    <text class="col" x="480" y="205">id</text><text class="type" x="756" y="205">SERIAL</text>
+
+    <rect x="442" y="223" width="28" height="18" rx="4" fill="#60a5fa"/><text class="key" x="456" y="236">FK</text>
+    <text class="col" x="480" y="237">user_id</text><text class="type" x="756" y="237">INTEGER</text>
+
+    <text class="col" x="480" y="269">original_url</text><text class="type" x="756" y="269">TEXT</text>
+
+    <rect x="442" y="287" width="28" height="18" rx="4" fill="#4ade80"/><text class="key" x="456" y="300">UK</text>
+    <text class="col" x="480" y="301">short_code</text><text class="type" x="756" y="301">VARCHAR(20)</text>
+
+    <text class="col" x="480" y="333">is_active</text><text class="type" x="756" y="333">BOOLEAN</text>
+
+    <text class="col" x="480" y="361">expires_at</text><text class="type" x="756" y="361">TIMESTAMPTZ</text>
+    <text class="note" x="480" y="372">ว่าง = ไม่มีวันหมดอายุ</text>
+
+    <text class="col" x="480" y="397">created_at</text><text class="type" x="756" y="397">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- ================= CLICKS ================= -->
+  <g>
+    <rect class="card" x="830" y="120" width="340" height="288" rx="14" stroke="#22d3ee"/>
+    <path d="M830 134 a14 14 0 0 1 14 -14 h312 a14 14 0 0 1 14 14 v50 h-340 z" fill="#22d3ee"/>
+    <text class="tname" x="848" y="152">clicks</text>
+    <text class="tdesc" x="848" y="172">การเปิดลิงก์ 1 แถว ต่อ 1 ครั้ง</text>
+
+    <line class="row" x1="830" y1="216" x2="1170" y2="216"/>
+    <line class="row" x1="830" y1="248" x2="1170" y2="248"/>
+    <line class="row" x1="830" y1="280" x2="1170" y2="280"/>
+    <line class="row" x1="830" y1="312" x2="1170" y2="312"/>
+    <line class="row" x1="830" y1="344" x2="1170" y2="344"/>
+    <line class="row" x1="830" y1="376" x2="1170" y2="376"/>
+
+    <rect x="842" y="191" width="28" height="18" rx="4" fill="#facc15"/><text class="key" x="856" y="204">PK</text>
+    <text class="col" x="880" y="205">id</text><text class="type" x="1156" y="205">BIGSERIAL</text>
+
+    <rect x="842" y="223" width="28" height="18" rx="4" fill="#60a5fa"/><text class="key" x="856" y="236">FK</text>
+    <text class="col" x="880" y="237">url_id</text><text class="type" x="1156" y="237">INTEGER</text>
+
+    <text class="col" x="880" y="269">clicked_at</text><text class="type" x="1156" y="269">TIMESTAMPTZ</text>
+
+    <text class="col" x="880" y="297">ip_hash</text><text class="type" x="1156" y="297">VARCHAR(64)</text>
+    <text class="note" x="880" y="308">SHA-256 + salt ไม่เก็บ IP จริง</text>
+
+    <text class="col" x="880" y="333">user_agent</text><text class="type" x="1156" y="333">VARCHAR(500)</text>
+
+    <text class="col" x="880" y="365">referrer</text><text class="type" x="1156" y="365">VARCHAR(500)</text>
+
+    <text class="col" x="880" y="393">device_type</text><text class="type" x="1156" y="393">VARCHAR(20)</text>
+    <text class="note" x="880" y="404">mobile · tablet · desktop · bot</text>
+  </g>
+
+  <!-- ================= RELATIONSHIPS ================= -->
+  <!-- users.id (one) -> urls.user_id (zero or many) -->
+  <path class="rel" d="M370 200 H400 V232 H430"/>
+  <line class="rel" x1="378" y1="192" x2="378" y2="208"/>
+  <line class="rel" x1="385" y1="192" x2="385" y2="208"/>
+  <line class="rel" x1="416" y1="232" x2="430" y2="224"/>
+  <line class="rel" x1="416" y1="232" x2="430" y2="240"/>
+  <circle cx="410" cy="232" r="5" fill="#0f1420" stroke="#e2e8f0" stroke-width="2"/>
+  <text class="rellabel" x="400" y="440">1 : N</text>
+  <text class="relsub" x="400" y="458">ผู้ใช้ 1 คน สร้างได้หลายลิงก์</text>
+  <text class="relsub" x="400" y="476">ON DELETE SET NULL</text>
+  <line x1="400" y1="248" x2="400" y2="424" stroke="#475569" stroke-width="1" stroke-dasharray="3 4"/>
+
+  <!-- urls.id (one) -> clicks.url_id (zero or many) -->
+  <path class="rel" d="M770 200 H800 V232 H830"/>
+  <line class="rel" x1="778" y1="192" x2="778" y2="208"/>
+  <line class="rel" x1="785" y1="192" x2="785" y2="208"/>
+  <line class="rel" x1="816" y1="232" x2="830" y2="224"/>
+  <line class="rel" x1="816" y1="232" x2="830" y2="240"/>
+  <circle cx="810" cy="232" r="5" fill="#0f1420" stroke="#e2e8f0" stroke-width="2"/>
+  <text class="rellabel" x="800" y="440">1 : N</text>
+  <text class="relsub" x="800" y="458">ลิงก์ 1 อัน ถูกเปิดได้หลายครั้ง</text>
+  <text class="relsub" x="800" y="476">ON DELETE CASCADE</text>
+  <line x1="800" y1="248" x2="800" y2="424" stroke="#475569" stroke-width="1" stroke-dasharray="3 4"/>
+
+  <!-- ================= LEGEND ================= -->
+  <rect x="30" y="512" width="1140" height="100" rx="14" fill="#161d2b" stroke="#334155" stroke-width="2"/>
+  <rect x="52" y="536" width="28" height="18" rx="4" fill="#facc15"/><text class="key" x="66" y="549">PK</text>
+  <text class="legend" x="90" y="550">Primary Key</text>
+  <rect x="200" y="536" width="28" height="18" rx="4" fill="#60a5fa"/><text class="key" x="214" y="549">FK</text>
+  <text class="legend" x="238" y="550">Foreign Key</text>
+  <rect x="348" y="536" width="28" height="18" rx="4" fill="#4ade80"/><text class="key" x="362" y="549">UK</text>
+  <text class="legend" x="386" y="550">Unique (ห้ามซ้ำ)</text>
+
+  <!-- crow's foot legend -->
+  <g transform="translate(560 545)">
+    <line class="rel" x1="0" y1="0" x2="44" y2="0"/>
+    <line class="rel" x1="8" y1="-8" x2="8" y2="8"/>
+    <line class="rel" x1="15" y1="-8" x2="15" y2="8"/>
+  </g>
+  <text class="legend" x="616" y="550">หนึ่งเดียว (one)</text>
+  <g transform="translate(760 545)">
+    <line class="rel" x1="0" y1="0" x2="44" y2="0"/>
+    <line class="rel" x1="30" y1="0" x2="44" y2="-8"/>
+    <line class="rel" x1="30" y1="0" x2="44" y2="8"/>
+    <circle cx="24" cy="0" r="5" fill="#161d2b" stroke="#e2e8f0" stroke-width="2"/>
+  </g>
+  <text class="legend" x="816" y="550">ศูนย์หรือหลายรายการ (zero or many)</text>
+
+  <text class="legend" x="52" y="590">ข้อมูลที่คำนวณได้ไม่เก็บซ้ำ: จำนวนการเปิด = COUNT(clicks) · ผู้เข้าชมไม่ซ้ำ = COUNT(DISTINCT ip_hash) · Short URL = BASE_URL + short_code · QR Code สร้างจาก Short URL</text>
+</svg>

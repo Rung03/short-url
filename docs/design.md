@@ -222,6 +222,10 @@ sequenceDiagram
 
 ## 7. ER Diagram
 
+![Short URL ER Diagram](er-diagram.svg)
+
+แบบ Mermaid (ข้อมูลเดียวกัน):
+
 ```mermaid
 erDiagram
     USERS ||--o{ URLS : "สร้าง"

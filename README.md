@@ -117,6 +117,8 @@ Context Diagram, DFD Level 1, Workflow, ตารางข้อมูลเข�
 
 ## ER Diagram
 
+![Short URL ER Diagram](docs/er-diagram.svg)
+
 ```mermaid
 erDiagram
     USERS ||--o{ URLS : "สร้าง"
