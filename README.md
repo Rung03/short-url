@@ -65,6 +65,12 @@ flowchart LR
 
 ## Data Flow Diagram (DFD Level 0)
 
+Context Diagram — ระบบทั้งหมดเป็นกระบวนการเดียว (0) แสดงข้อมูลที่ไหลเข้า-ออกกับผู้เกี่ยวข้องภายนอก
+
+![Short URL Context Diagram](docs/context-diagram.svg)
+
+DFD Level 0 — แตกระบบเป็น 7 กระบวนการหลัก พร้อมคลังข้อมูล (ข้อมูลเข้า-ออกตรงกับ Context Diagram)
+
 ![Short URL DFD Level 0](docs/dfd-level0.svg)
 
 <details>

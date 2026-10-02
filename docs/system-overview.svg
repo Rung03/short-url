@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 2810" width="1680" height="2810" font-family="'Segoe UI', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 3810" width="1680" height="3810" font-family="'Segoe UI', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, sans-serif">
   <title>Short URL — System Overview</title>
-  <rect width="1680" height="2810" fill="#0a0e17"/>
+  <rect width="1680" height="3810" fill="#0a0e17"/>
   <text x="40" y="78" fill="#f8fafc" font-size="40" font-weight="800">Short URL — System Overview</text>
-  <text x="40" y="114" fill="#94a3b8" font-size="18">1. Architecture  ·  2. DFD Level 0  ·  3. ER Diagram</text>
+  <text x="40" y="114" fill="#94a3b8" font-size="18">1. Architecture  ·  2. Context Diagram  ·  3. DFD Level 0  ·  4. ER Diagram</text>
   <svg x="240" y="150" width="1200" height="940" viewBox="0 0 1200 940">
   
   <defs>
@@ -190,7 +190,70 @@
   <g class="badge"><circle cx="835" cy="635" r="13"/><text x="835" y="640">8</text></g>
   <text x="800" y="666" class="flowlabel">302 Redirect</text>
 </svg>
-  <svg x="40" y="1130" width="1600" height="1150" viewBox="0 0 1600 1150">
+  <svg x="140" y="1130" width="1400" height="960" viewBox="0 0 1400 960">
+  
+  <defs>
+    <marker id="ctxArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#cbd5e1"/>
+    </marker>
+    <style>
+      .ext { fill: #161d2b; stroke-width: 2; }
+      .et { fill: #f8fafc; font-size: 18px; font-weight: 700; }
+      .sys { fill: #1e1b3a; stroke: #a78bfa; stroke-width: 2; }
+      .sysnum { fill: #0b1020; font-size: 16px; font-weight: 800; text-anchor: middle; }
+      .systxt { fill: #f8fafc; font-size: 18px; font-weight: 700; text-anchor: middle; }
+      .f { fill: none; stroke: #94a3b8; stroke-width: 1.6; marker-end: url(#ctxArrow); }
+      .fl { fill: #e2e8f0; font-size: 13px; }
+    </style>
+  </defs>
+  <rect width="1400" height="960" rx="24" fill="#0f1420"/>
+  <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#a78bfa"/>
+  <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — Context Diagram</text>
+  <g transform="translate(0 70)">
+  
+  <path class="f" d="M280 95 H620 V378"/>
+  <path class="f" d="M560 470 H170 V132"/>
+  <path class="f" d="M1120 95 H780 V378"/>
+  <path class="f" d="M840 470 H1230 V132"/>
+  <path class="f" d="M650 780 V532"/>
+  <path class="f" d="M750 530 V778"/>
+  
+  <text class="fl" x="300" y="122" text-anchor="start">ข้อมูลเข้าสู่ระบบ</text>
+  <text class="fl" x="300" y="141" text-anchor="start">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ</text>
+  <text class="fl" x="300" y="160" text-anchor="start">Short URL</text>
+  <text class="fl" x="300" y="179" text-anchor="start">เงื่อนไขรายงาน</text>
+  <text class="fl" x="300" y="198" text-anchor="start">สถานะลิงก์ของตัวเอง</text>
+  <text class="fl" x="186" y="380" text-anchor="start">Token</text>
+  <text class="fl" x="186" y="399" text-anchor="start">Short URL</text>
+  <text class="fl" x="186" y="418" text-anchor="start">รูป QR Code</text>
+  <text class="fl" x="186" y="437" text-anchor="start">รายงานของตัวเอง</text>
+  <text class="fl" x="1100" y="122" text-anchor="end">ข้อมูลเข้าสู่ระบบ</text>
+  <text class="fl" x="1100" y="141" text-anchor="end">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ</text>
+  <text class="fl" x="1100" y="160" text-anchor="end">Short URL</text>
+  <text class="fl" x="1100" y="179" text-anchor="end">เงื่อนไขรายงาน</text>
+  <text class="fl" x="1100" y="198" text-anchor="end">สถานะลิงก์ของทุกคน</text>
+  <text class="fl" x="1100" y="217" text-anchor="end">ข้อมูลสิทธิ์ผู้ใช้</text>
+  <text class="fl" x="1214" y="364" text-anchor="end">Token</text>
+  <text class="fl" x="1214" y="383" text-anchor="end">Short URL</text>
+  <text class="fl" x="1214" y="402" text-anchor="end">รูป QR Code</text>
+  <text class="fl" x="1214" y="421" text-anchor="end">รายงานทั้งระบบ</text>
+  <text class="fl" x="1214" y="440" text-anchor="end">รายชื่อผู้ใช้</text>
+  <text class="fl" x="638" y="660" text-anchor="end">รหัสลิงก์สั้น</text>
+  <text class="fl" x="762" y="660" text-anchor="start">URL ปลายทาง</text>
+  
+  <rect class="ext" x="60" y="60" width="220" height="70" rx="12" stroke="#38bdf8"/>
+  <text class="et" x="170" y="102" text-anchor="middle">User</text>
+  <rect class="ext" x="1120" y="60" width="220" height="70" rx="12" stroke="#f472b6"/>
+  <text class="et" x="1230" y="102" text-anchor="middle">Admin</text>
+  <rect class="ext" x="590" y="780" width="220" height="70" rx="12" stroke="#4ade80"/>
+  <text class="et" x="700" y="822" text-anchor="middle">Visitor</text>
+  <rect class="sys" x="560" y="380" width="280" height="150" rx="14"/>
+  <path d="M560 394 a14 14 0 0 1 14 -14 h252 a14 14 0 0 1 14 14 v22 h-280 z" fill="#a855f7"/>
+  <text class="sysnum" x="700" y="405">0</text>
+  <text class="systxt" x="700" y="478">ระบบ Short URL</text>
+  </g>
+</svg>
+  <svg x="40" y="2130" width="1600" height="1150" viewBox="0 0 1600 1150">
   
   <defs>
     <marker id="dfdArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -303,7 +366,7 @@
   <text class="sid" x="1446" y="926">D3</text>
   <text class="sn" x="1488" y="926">clicks</text>
 </svg>
-  <svg x="240" y="2320" width="1200" height="450" viewBox="0 0 1200 450">
+  <svg x="240" y="3320" width="1200" height="450" viewBox="0 0 1200 450">
   
   <defs>
     <style>
