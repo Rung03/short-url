@@ -9,7 +9,7 @@
 - [ความสามารถของระบบ](#ความสามารถของระบบ)
 - [เทคโนโลยีที่ใช้](#เทคโนโลยีที่ใช้)
 - [สถาปัตยกรรมระบบ](#สถาปัตยกรรมระบบ)
-- [Data Flow Diagram](#data-flow-diagram-dfd-level-0)
+- [Data Flow Diagram](#data-flow-diagram-dfd)
 - [ER Diagram](#er-diagram)
 - [โครงสร้างโปรเจกต์](#โครงสร้างโปรเจกต์)
 - [การติดตั้งและรันบนเครื่อง](#การติดตั้งและรันบนเครื่อง)
@@ -63,15 +63,15 @@ flowchart LR
 
 ผู้ใช้งานใช้หน้าเว็บ React เพื่อสร้างลิงก์และดูสถิติ ส่วนผู้เข้าชมที่คลิกหรือสแกน QR Code จะเรียก Backend โดยตรง แล้วถูก redirect ไปยัง URL ต้นฉบับทันที
 
-## Data Flow Diagram (DFD Level 0)
+## Data Flow Diagram (DFD)
 
-Context Diagram — ระบบทั้งหมดเป็นกระบวนการเดียว (0) แสดงข้อมูลที่ไหลเข้า-ออกกับผู้เกี่ยวข้องภายนอก
-
-![Short URL Context Diagram](docs/context-diagram.svg)
-
-DFD Level 0 — แตกระบบเป็น 7 กระบวนการหลัก พร้อมคลังข้อมูล (ข้อมูลเข้า-ออกตรงกับ Context Diagram)
+DFD Level 0 (Context Diagram) — ระบบทั้งหมดเป็นกระบวนการเดียว (0) แสดงข้อมูลที่ไหลเข้า-ออกกับผู้เกี่ยวข้องภายนอก
 
 ![Short URL DFD Level 0](docs/dfd-level0.svg)
+
+DFD Level 1 — แตกระบบเป็น 7 กระบวนการหลัก พร้อมคลังข้อมูล (ข้อมูลเข้า-ออกตรงกับ Level 0)
+
+![Short URL DFD Level 1](docs/dfd-level1.svg)
 
 <details>
 <summary>แบบ Mermaid</summary>
@@ -85,13 +85,13 @@ flowchart LR
     R2[(D2 urls)]
     R3[(D3 clicks)]
 
-    P1["1.0<br/>จัดการการเข้าใช้งาน"]
-    P2["2.0<br/>จัดการ Short URL"]
-    P3["3.0<br/>จัดการ QR Code"]
-    P4["4.0<br/>จัดการการเปิดลิงก์"]
-    P5["5.0<br/>จัดการรายงานและสถิติ"]
-    P6["6.0<br/>จัดการสถานะลิงก์"]
-    P7["7.0<br/>จัดการผู้ใช้"]
+    P1["1<br/>จัดการการเข้าใช้งาน"]
+    P2["2<br/>จัดการ Short URL"]
+    P3["3<br/>จัดการ QR Code"]
+    P4["4<br/>จัดการการเปิดลิงก์"]
+    P5["5<br/>จัดการรายงานและสถิติ"]
+    P6["6<br/>จัดการสถานะลิงก์"]
+    P7["7<br/>จัดการผู้ใช้"]
 
     D1[(D1 users)]
     D2[(D2 urls)]
@@ -131,8 +131,8 @@ flowchart LR
 
 </details>
 
-Context Diagram, DFD Level 1, Workflow, ตารางข้อมูลเข้า-ออกของแต่ละกระบวนการ, Data Dictionary และ Normalization ดูได้ที่ [docs/design.md](docs/design.md)
-DFD Level 0 + ER Diagram แบบ PDF (A4 แนวนอน 2 หน้า): [docs/short-url-dfd-er.pdf](docs/short-url-dfd-er.pdf)
+DFD Level 2 (กระบวนการ 4), Workflow, ตารางข้อมูลเข้า-ออกของแต่ละกระบวนการ, Data Dictionary และ Normalization ดูได้ที่ [docs/design.md](docs/design.md)
+DFD Level 0 + DFD Level 1 + ER Diagram แบบ PDF (A4 แนวนอน 3 หน้า): [docs/short-url-dfd-er.pdf](docs/short-url-dfd-er.pdf)
 เอกสารส่งงานฉบับเต็ม (PDF 6 หน้า): [docs/short-url-report.pdf](docs/short-url-report.pdf)
 
 ## ER Diagram

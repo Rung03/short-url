@@ -1,129 +1,65 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1150" width="1600" height="1150" font-family="'Segoe UI', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, sans-serif">
-  <title>Short URL — DFD Level 0</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 960" width="1400" height="960" font-family="'Segoe UI', 'Noto Sans Thai', 'Leelawadee UI', Tahoma, sans-serif">
+  <title>Short URL — DFD Level 0 (Context Diagram)</title>
   <defs>
-    <marker id="dfdArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <marker id="ctxArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#000000"/>
     </marker>
     <style>
       .ext { fill: #ffffff; stroke-width: 2; }
       .et { fill: #000000; font-size: 18px; font-weight: 700; }
-      .es { fill: #000000; font-size: 13px; }
-      .proc { fill: #ffffff; stroke: #000000; stroke-width: 2; }
-      .pn { fill: #000000; font-size: 13px; font-weight: 700; text-anchor: middle; }
-      .pt { fill: #000000; font-size: 15px; font-weight: 600; text-anchor: middle; }
-      .st { fill: none; stroke: #000000; stroke-width: 2; }
-      .sid { fill: #000000; font-size: 15px; font-weight: 700; text-anchor: middle; }
-      .sn { fill: #000000; font-size: 16px; font-family: Consolas, 'Courier New', monospace; }
-      .f { fill: none; stroke: #000000; stroke-width: 1.6; stroke-linejoin: miter; marker-end: url(#dfdArrow); }
-      .fb { marker-start: url(#dfdArrow); }
-      .fl { fill: #000000; font-size: 12px; text-anchor: start; paint-order: stroke; stroke: #ffffff; stroke-width: 4px; stroke-linejoin: round; }
+      .sys { fill: #ffffff; stroke: #000000; stroke-width: 2; }
+      .sysnum { fill: #000000; font-size: 16px; font-weight: 800; text-anchor: middle; }
+      .systxt { fill: #000000; font-size: 18px; font-weight: 700; text-anchor: middle; }
+      .f { fill: none; stroke: #000000; stroke-width: 1.6; marker-end: url(#ctxArrow); }
+      .fl { fill: #000000; font-size: 13px; }
       .card { stroke: #000000; }
       .bar { fill: #000000; }
     </style>
   </defs>
-  <rect width="1600" height="1150" rx="24" fill="#ffffff"/>
+  <rect width="1400" height="960" rx="24" fill="#ffffff"/>
   <rect class="bar" x="24" y="24" width="8" height="52" rx="4" fill="#000000"/>
-  <text x="44" y="56" fill="#000000" font-size="30" font-weight="800">Short URL — DFD Level 0</text>
+  <text x="44" y="56" fill="#000000" font-size="30" font-weight="800">Short URL — DFD Level 0 (Context Diagram)</text>
+  <g transform="translate(0 70)">
   
-  <path class="f fb" d="M240.0 298 H292.2 V185 H675.0"/>
-  <path class="f fb" d="M240.0 314 H279.1 V325 H312.4 A6 6 0 0 1 324.4 325 H675.0"/>
-  <path class="f fb" d="M240.0 330 H312.4 A6 6 0 0 1 324.4 330 H383.8 V465 H675.0"/>
-  <path class="f fb" d="M240.0 346 H305.3 V605 H312.4 A6 6 0 0 1 324.4 605 H325.5 A6 6 0 0 1 337.5 605 H338.5 A6 6 0 0 1 350.5 605 H675.0"/>
-  <path class="f" d="M240.0 362 H266.0 V745 H312.4 A6 6 0 0 1 324.4 745 H325.5 A6 6 0 0 1 337.5 745 H338.5 A6 6 0 0 1 350.5 745 H364.7 A6 6 0 0 1 376.7 745 H675.0"/>
-  <path class="f fb" d="M240.0 750 H318.4 V225 H675.0"/>
-  <path class="f fb" d="M240.0 766 H331.5 V365 H377.8 A6 6 0 0 1 389.8 365 H675.0"/>
-  <path class="f fb" d="M240.0 782 H344.5 V505 H675.0"/>
-  <path class="f fb" d="M240.0 798 H370.7 V645 H675.0"/>
-  <path class="f" d="M240.0 814 H396.9 V785 H675.0"/>
-  <path class="f fb" d="M240.0 830 H410.0 V905 H675.0"/>
-  <path class="f fb" d="M240.0 1050 H357.6 V1060 H675.0"/>
-  <path class="f" d="M845.0 205 H1157.3 V590 H1197.6 A6 6 0 0 1 1209.6 590 H1420.0"/>
-  <path class="f" d="M1420.0 600 H1209.6 A6 6 0 0 0 1197.6 600 H1126.4 V625 H845.0"/>
-  <path class="f" d="M845.0 750 H1141.8 V610 H1197.6 A6 6 0 0 1 1209.6 610 H1420.0"/>
-  <path class="f fb" d="M845.0 905 H1166.7 A6 6 0 0 1 1178.7 905 H1219.1 V620 H1420.0"/>
-  <path class="f" d="M1420.0 630 H1250.0 V1045 H1194.2 A6 6 0 0 0 1182.2 1045 H845.0"/>
-  <path class="f fb" d="M845.0 485 H1095.5 V288 H1151.3 A6 6 0 0 1 1163.3 288 H1420.0"/>
-  <path class="f" d="M1420.0 300 H1163.3 A6 6 0 0 0 1151.3 300 H1110.9 V605 H845.0"/>
-  <path class="f fb" d="M845.0 885 H1166.7 A6 6 0 0 1 1178.7 885 H1203.6 V312 H1420.0"/>
-  <path class="f" d="M1420.0 902 H1256.0 A6 6 0 0 0 1244.0 902 H1234.5 V645 H1225.1 A6 6 0 0 0 1213.1 645 H1209.6 A6 6 0 0 0 1197.6 645 H1147.8 A6 6 0 0 0 1135.8 645 H845.0"/>
-  <path class="f" d="M845.0 780 H1172.7 V914 H1244.0 A6 6 0 0 1 1256.0 914 H1420.0"/>
-  <path class="f fb" d="M845.0 925 H1080.0 V926 H1244.0 A6 6 0 0 1 1256.0 926 H1420.0"/>
-  <path class="f" d="M845.0 1075 H1188.2 V938 H1244.0 A6 6 0 0 1 1256.0 938 H1420.0"/>
+  <path class="f" d="M280 95 H620 V378"/>
+  <path class="f" d="M560 470 H170 V132"/>
+  <path class="f" d="M1120 95 H780 V378"/>
+  <path class="f" d="M840 470 H1230 V132"/>
+  <path class="f" d="M650 780 V532"/>
+  <path class="f" d="M750 530 V778"/>
   
-  <text class="fl" x="424" y="180.0">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ / Short URL</text>
-  <text class="fl" x="424" y="320.0">Short URL / รูป QR Code</text>
-  <text class="fl" x="424" y="460.0">ข้อมูลเข้าสู่ระบบ / Token</text>
-  <text class="fl" x="424" y="600.0">เงื่อนไขรายงาน / รายงานของตัวเอง</text>
-  <text class="fl" x="424" y="740.0">สถานะลิงก์ของตัวเอง</text>
-  <text class="fl" x="424" y="220.0">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ / Short URL</text>
-  <text class="fl" x="424" y="360.0">Short URL / รูป QR Code</text>
-  <text class="fl" x="424" y="500.0">ข้อมูลเข้าสู่ระบบ / Token</text>
-  <text class="fl" x="424" y="640.0">เงื่อนไขรายงาน / รายงานทั้งระบบ</text>
-  <text class="fl" x="424" y="780.0">สถานะลิงก์ของทุกคน</text>
-  <text class="fl" x="424" y="900.0">ข้อมูลสิทธิ์ผู้ใช้ / รายชื่อผู้ใช้</text>
-  <text class="fl" x="424" y="1055.0">รหัสลิงก์สั้น / URL ปลายทาง</text>
-  <text class="fl" x="857" y="200.0">ข้อมูลลิงก์ใหม่</text>
-  <text class="fl" x="857" y="620.0">รายการลิงก์</text>
-  <text class="fl" x="857" y="745.0">สถานะลิงก์</text>
-  <text class="fl" x="857" y="900.0">จำนวนลิงก์ / ลิงก์ของผู้ใช้</text>
-  <text class="fl" x="857" y="1040.0">URL ต้นฉบับ, สถานะลิงก์</text>
-  <text class="fl" x="857" y="480.0">ข้อมูลบัญชี / รหัสผ่าน hash</text>
-  <text class="fl" x="857" y="600.0">ชื่อเจ้าของลิงก์</text>
-  <text class="fl" x="857" y="880.0">รายชื่อผู้ใช้ / สิทธิ์, รหัสผ่านใหม่</text>
-  <text class="fl" x="857" y="640.0">ข้อมูลการเปิด</text>
-  <text class="fl" x="857" y="775.0">ข้อมูลการเปิดที่ลบ</text>
-  <text class="fl" x="857" y="920.0">จำนวนการเปิด / ข้อมูลการเปิดที่ลบ</text>
-  <text class="fl" x="857" y="1070.0">ข้อมูลการเปิด</text>
+  <text class="fl" x="300" y="122" text-anchor="start">ข้อมูลเข้าสู่ระบบ</text>
+  <text class="fl" x="300" y="141" text-anchor="start">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ</text>
+  <text class="fl" x="300" y="160" text-anchor="start">Short URL</text>
+  <text class="fl" x="300" y="179" text-anchor="start">เงื่อนไขรายงาน</text>
+  <text class="fl" x="300" y="198" text-anchor="start">สถานะลิงก์ของตัวเอง</text>
+  <text class="fl" x="186" y="380" text-anchor="start">Token</text>
+  <text class="fl" x="186" y="399" text-anchor="start">Short URL</text>
+  <text class="fl" x="186" y="418" text-anchor="start">รูป QR Code</text>
+  <text class="fl" x="186" y="437" text-anchor="start">รายงานของตัวเอง</text>
+  <text class="fl" x="1100" y="122" text-anchor="end">ข้อมูลเข้าสู่ระบบ</text>
+  <text class="fl" x="1100" y="141" text-anchor="end">URL ต้นฉบับ, รหัสที่ตั้งเอง, วันหมดอายุ</text>
+  <text class="fl" x="1100" y="160" text-anchor="end">Short URL</text>
+  <text class="fl" x="1100" y="179" text-anchor="end">เงื่อนไขรายงาน</text>
+  <text class="fl" x="1100" y="198" text-anchor="end">สถานะลิงก์ของทุกคน</text>
+  <text class="fl" x="1100" y="217" text-anchor="end">ข้อมูลสิทธิ์ผู้ใช้</text>
+  <text class="fl" x="1214" y="364" text-anchor="end">Token</text>
+  <text class="fl" x="1214" y="383" text-anchor="end">Short URL</text>
+  <text class="fl" x="1214" y="402" text-anchor="end">รูป QR Code</text>
+  <text class="fl" x="1214" y="421" text-anchor="end">รายงานทั้งระบบ</text>
+  <text class="fl" x="1214" y="440" text-anchor="end">รายชื่อผู้ใช้</text>
+  <text class="fl" x="638" y="660" text-anchor="end">รหัสลิงก์สั้น</text>
+  <text class="fl" x="762" y="660" text-anchor="start">URL ปลายทาง</text>
   
-  <rect class="ext" x="40" y="285" width="200" height="90" rx="12" stroke="#000000"/>
-  <text class="et" x="140" y="337" text-anchor="middle">User</text>
-  <rect class="ext" x="40" y="745" width="200" height="90" rx="12" stroke="#000000"/>
-  <text class="et" x="140" y="797" text-anchor="middle">Admin</text>
-  <rect class="ext" x="40" y="1005" width="200" height="90" rx="12" stroke="#000000"/>
-  <text class="et" x="140" y="1057" text-anchor="middle">Visitor</text>
-  
-  <rect class="proc" x="675" y="160" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="180" x2="845" y2="180"/>
-  <text class="pn" x="760" y="176">2.0</text>
-  <text class="pt" x="760" y="210">จัดการ Short URL</text>
-  <rect class="proc" x="675" y="300" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="320" x2="845" y2="320"/>
-  <text class="pn" x="760" y="316">3.0</text>
-  <text class="pt" x="760" y="350">จัดการ QR Code</text>
-  <rect class="proc" x="675" y="440" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="460" x2="845" y2="460"/>
-  <text class="pn" x="760" y="456">1.0</text>
-  <text class="pt" x="760" y="490">จัดการการเข้าใช้งาน</text>
-  <rect class="proc" x="675" y="580" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="600" x2="845" y2="600"/>
-  <text class="pn" x="760" y="596">5.0</text>
-  <text class="pt" x="760" y="630">จัดการรายงานและสถิติ</text>
-  <rect class="proc" x="675" y="720" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="740" x2="845" y2="740"/>
-  <text class="pn" x="760" y="736">6.0</text>
-  <text class="pt" x="760" y="770">จัดการสถานะลิงก์</text>
-  <rect class="proc" x="675" y="860" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="880" x2="845" y2="880"/>
-  <text class="pn" x="760" y="876">7.0</text>
-  <text class="pt" x="760" y="910">จัดการผู้ใช้</text>
-  <rect class="proc" x="675" y="1015" width="170" height="70" rx="8"/>
-  <line class="proc" x1="675" y1="1035" x2="845" y2="1035"/>
-  <text class="pn" x="760" y="1031">4.0</text>
-  <text class="pt" x="760" y="1065">จัดการการเปิดลิงก์</text>
-  
-  <rect x="1420" y="582" width="140" height="56" fill="#ffffff"/>
-  <path class="st" d="M1560 582 H1420 V638 H1560"/>
-  <line class="st" x1="1472" y1="582" x2="1472" y2="638"/>
-  <text class="sid" x="1446" y="616">D2</text>
-  <text class="sn" x="1488" y="616">urls</text>
-  <rect x="1420" y="272" width="140" height="56" fill="#ffffff"/>
-  <path class="st" d="M1560 272 H1420 V328 H1560"/>
-  <line class="st" x1="1472" y1="272" x2="1472" y2="328"/>
-  <text class="sid" x="1446" y="306">D1</text>
-  <text class="sn" x="1488" y="306">users</text>
-  <rect x="1420" y="892" width="140" height="56" fill="#ffffff"/>
-  <path class="st" d="M1560 892 H1420 V948 H1560"/>
-  <line class="st" x1="1472" y1="892" x2="1472" y2="948"/>
-  <text class="sid" x="1446" y="926">D3</text>
-  <text class="sn" x="1488" y="926">clicks</text>
+  <rect class="ext" x="60" y="60" width="220" height="70" rx="12" stroke="#000000"/>
+  <text class="et" x="170" y="102" text-anchor="middle">User</text>
+  <rect class="ext" x="1120" y="60" width="220" height="70" rx="12" stroke="#000000"/>
+  <text class="et" x="1230" y="102" text-anchor="middle">Admin</text>
+  <rect class="ext" x="590" y="780" width="220" height="70" rx="12" stroke="#000000"/>
+  <text class="et" x="700" y="822" text-anchor="middle">Visitor</text>
+  <rect class="sys" x="560" y="380" width="280" height="150" rx="14"/>
+  <path d="M560 394 a14 14 0 0 1 14 -14 h252 a14 14 0 0 1 14 14 v22 h-280 z" fill="#e0e0e0"/>
+  <text class="sysnum" x="700" y="405">0</text>
+  <text class="systxt" x="700" y="478">ระบบ Short URL</text>
+  </g>
 </svg>
