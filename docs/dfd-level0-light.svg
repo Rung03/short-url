@@ -76,20 +76,11 @@
   <text class="fl" x="828" y="1063.0">ข้อมูลการเปิด</text>
   
   <rect class="ext" x="40" y="285" width="200" height="90" rx="12" stroke="#000000"/>
-  <circle cx="72" cy="322" r="9" fill="#000000"/>
-  <path d="M56 352 a16 13 0 0 1 32 0 z" fill="#000000"/>
-  <text class="et" x="102" y="328">ผู้ใช้</text>
-  <text class="es" x="102" y="348">User</text>
+  <text class="et" x="140" y="337" text-anchor="middle">User</text>
   <rect class="ext" x="40" y="745" width="200" height="90" rx="12" stroke="#000000"/>
-  <circle cx="72" cy="782" r="9" fill="#000000"/>
-  <path d="M56 812 a16 13 0 0 1 32 0 z" fill="#000000"/>
-  <text class="et" x="102" y="788">ผู้ดูแลระบบ</text>
-  <text class="es" x="102" y="808">Admin</text>
+  <text class="et" x="140" y="797" text-anchor="middle">Admin</text>
   <rect class="ext" x="40" y="1005" width="200" height="90" rx="12" stroke="#000000"/>
-  <circle cx="72" cy="1042" r="9" fill="#000000"/>
-  <path d="M56 1072 a16 13 0 0 1 32 0 z" fill="#000000"/>
-  <text class="et" x="102" y="1048">ผู้เข้าชม</text>
-  <text class="es" x="102" y="1068">Visitor</text>
+  <text class="et" x="140" y="1057" text-anchor="middle">Visitor</text>
   
   <circle class="proc" cx="760" cy="195" r="56"/>
   <text class="pn" x="760" y="179">2.0</text><text class="pt" x="760" y="199">สร้าง</text><text class="pt" x="760" y="216">Short URL</text>
