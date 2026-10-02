@@ -64,6 +64,11 @@ flowchart LR
 
 ## Data Flow Diagram (DFD Level 0)
 
+![Short URL DFD Level 0](docs/dfd-level0.svg)
+
+<details>
+<summary>แบบ Mermaid</summary>
+
 ```mermaid
 flowchart LR
     U[ผู้ใช้]
@@ -113,7 +118,10 @@ flowchart LR
     P7 -- "ลบลิงก์ของผู้ใช้ที่ถูกลบ" --> D2
 ```
 
+</details>
+
 Context Diagram, DFD Level 1, Workflow, ตารางข้อมูลเข้า-ออกของแต่ละกระบวนการ, Data Dictionary และ Normalization ดูได้ที่ [docs/design.md](docs/design.md)
+ภาพรวม Architecture + DFD + ER ในภาพเดียว: [docs/system-overview.svg](docs/system-overview.svg)
 
 ## ER Diagram
 

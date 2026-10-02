@@ -5,6 +5,8 @@
 
 ![Short URL System Architecture](architecture.svg)
 
+ภาพรวม Architecture + DFD + ER ในภาพเดียว: [system-overview.svg](system-overview.svg)
+
 ## สารบัญ
 
 1. [ผู้เกี่ยวข้องกับระบบ](#1-ผู้เกี่ยวข้องกับระบบ)
@@ -60,6 +62,10 @@ flowchart LR
 ## 3. DFD Level 0
 
 แตกระบบออกเป็น 7 กระบวนการหลัก และคลังข้อมูล 3 แห่ง (ตรงกับตารางในฐานข้อมูล)
+
+![Short URL DFD Level 0](dfd-level0.svg)
+
+แบบ Mermaid (ข้อมูลเดียวกัน คลัง D2, D3 วาดซ้ำฝั่งซ้ายสำหรับการอ่าน เพื่อลดเส้นตัดกัน):
 
 ```mermaid
 flowchart LR
