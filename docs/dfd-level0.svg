@@ -17,16 +17,11 @@
       .f { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-linejoin: miter; marker-end: url(#dfdArrow); }
       .fb { marker-start: url(#dfdArrow); }
       .fl { fill: #e2e8f0; font-size: 12px; text-anchor: start; paint-order: stroke; stroke: #0f1420; stroke-width: 4px; stroke-linejoin: round; }
-      .lg { fill: #cbd5e1; font-size: 13px; }
     </style>
   </defs>
   <rect width="1500" height="1150" rx="24" fill="#0f1420"/>
   <rect x="24" y="24" width="8" height="52" rx="4" fill="#a78bfa"/>
   <text x="44" y="56" fill="#f8fafc" font-size="30" font-weight="800">Short URL — DFD Level 0</text>
-  <text x="44" y="82" fill="#cbd5e1" font-size="14">7 กระบวนการ · 3 คลังข้อมูล · ผู้เกี่ยวข้อง 3 กลุ่ม</text>
-  <text x="140" y="128" fill="#64748b" font-size="13" text-anchor="middle" font-weight="700">ผู้เกี่ยวข้องภายนอก</text>
-  <text x="760" y="128" fill="#64748b" font-size="13" text-anchor="middle" font-weight="700">กระบวนการ</text>
-  <text x="1370" y="128" fill="#64748b" font-size="13" text-anchor="middle" font-weight="700">คลังข้อมูล</text>
   
   <path class="f fb" d="M240.0 298 H360.0 V195 H704.0"/>
   <path class="f fb" d="M240.0 314 H420.0 V335 H704.0"/>
@@ -118,9 +113,4 @@
   <line class="st" x1="1352" y1="892" x2="1352" y2="948"/>
   <text class="sid" x="1326" y="926">D3</text>
   <text class="sn" x="1368" y="926">clicks</text>
-  <rect x="1250" y="1010" width="220" height="122" rx="12" fill="#161d2b" stroke="#334155"/>
-  <circle cx="1274" cy="1032" r="9" fill="#1e1b3a" stroke="#a78bfa" stroke-width="2"/><text class="lg" x="1292" y="1037">กระบวนการ</text>
-  <rect x="1264" y="1048" width="20" height="16" rx="3" fill="#161d2b" stroke="#cbd5e1" stroke-width="2"/><text class="lg" x="1292" y="1061">ผู้เกี่ยวข้องภายนอก</text>
-  <path d="M1286 1072 H1264 V1086 H1286" fill="none" stroke="#94a3b8" stroke-width="2"/><text class="lg" x="1292" y="1084">คลังข้อมูล</text>
-  <path d="M1262 1106 H1270 A5 5 0 0 1 1280 1106 H1288" fill="none" stroke="#94a3b8" stroke-width="1.6"/><text class="lg" x="1292" y="1110">เส้นข้าม (ไม่เชื่อมกัน)</text>
 </svg>
