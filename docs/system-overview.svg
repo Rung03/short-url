@@ -300,14 +300,14 @@
   <line class="st" x1="1312" y1="530" x2="1312" y2="690"/>
   <text class="sid" x="1286" y="616">D2</text>
   <text class="sn" x="1328" y="616">urls</text>
-  <rect x="1260" y="265" width="200" height="70" fill="#161d2b"/>
-  <path class="st" d="M1460 265 H1260 V335 H1460"/>
-  <line class="st" x1="1312" y1="265" x2="1312" y2="335"/>
+  <rect x="1260" y="220" width="200" height="160" fill="#161d2b"/>
+  <path class="st" d="M1460 220 H1260 V380 H1460"/>
+  <line class="st" x1="1312" y1="220" x2="1312" y2="380"/>
   <text class="sid" x="1286" y="306">D1</text>
   <text class="sn" x="1328" y="306">users</text>
-  <rect x="1260" y="855" width="200" height="130" fill="#161d2b"/>
-  <path class="st" d="M1460 855 H1260 V985 H1460"/>
-  <line class="st" x1="1312" y1="855" x2="1312" y2="985"/>
+  <rect x="1260" y="840" width="200" height="160" fill="#161d2b"/>
+  <path class="st" d="M1460 840 H1260 V1000 H1460"/>
+  <line class="st" x1="1312" y1="840" x2="1312" y2="1000"/>
   <text class="sid" x="1286" y="926">D3</text>
   <text class="sn" x="1328" y="926">clicks</text>
   <rect x="1250" y="1010" width="220" height="122" rx="12" fill="#161d2b" stroke="#334155"/>
