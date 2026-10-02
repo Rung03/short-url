@@ -208,7 +208,7 @@
       .sn { fill: #f8fafc; font-size: 16px; font-family: Consolas, 'Courier New', monospace; }
       .f { fill: none; stroke: #94a3b8; stroke-width: 1.6; stroke-linejoin: miter; marker-end: url(#dfdArrow); }
       .fb { marker-start: url(#dfdArrow); }
-      .fl { fill: #e2e8f0; font-size: 12px; text-anchor: middle; paint-order: stroke; stroke: #0f1420; stroke-width: 4px; stroke-linejoin: round; }
+      .fl { fill: #e2e8f0; font-size: 12px; text-anchor: start; paint-order: stroke; stroke: #0f1420; stroke-width: 4px; stroke-linejoin: round; }
       .lg { fill: #cbd5e1; font-size: 13px; }
     </style>
   </defs>
@@ -220,49 +220,49 @@
   <text x="760" y="128" fill="#64748b" font-size="13" text-anchor="middle" font-weight="700">กระบวนการ</text>
   <text x="1360" y="128" fill="#64748b" font-size="13" text-anchor="middle" font-weight="700">คลังข้อมูล</text>
   
-  <path class="f fb" d="M240.0 298 H368.9 V195 H704.0"/>
-  <path class="f fb" d="M240.0 314 H435.6 V335 H704.0"/>
-  <path class="f fb" d="M240.0 330 H324.4 V455 H707.7"/>
-  <path class="f fb" d="M240.0 346 H302.2 V595 H340.7 A6 6 0 0 1 352.7 595 H707.7"/>
-  <path class="f" d="M240.0 362 H280.0 V735 H340.7 A6 6 0 0 1 352.7 735 H385.1 A6 6 0 0 1 397.1 735 H707.7"/>
-  <path class="f fb" d="M240.0 760 H346.7 V495 H707.7"/>
-  <path class="f fb" d="M240.0 780 H391.1 V635 H707.7"/>
-  <path class="f" d="M240.0 800 H457.8 V775 H707.7"/>
-  <path class="f fb" d="M240.0 820 H480.0 V895 H704.0"/>
-  <path class="f fb" d="M240.0 1050 H413.3 V1050 H704.0"/>
-  <path class="f" d="M816.0 195 H976.0 V550 H1260.0"/>
-  <path class="f" d="M1260.0 580 H940.0 A6 6 0 0 0 928.0 580 H850.0 V597 H813.0"/>
-  <path class="f" d="M813.0 737 H907.0 A6 6 0 0 1 919.0 737 H928.0 A6 6 0 0 1 940.0 737 H955.0 V610 H1260.0"/>
-  <path class="f fb" d="M816.0 895 H865.0 A6 6 0 0 1 877.0 895 H997.0 V640 H1260.0"/>
-  <path class="f" d="M1260.0 670 H1018.0 V1032 H813.0"/>
-  <path class="f fb" d="M816.0 475 H892.0 V285 H970.0 A6 6 0 0 1 982.0 285 H1260.0"/>
-  <path class="f fb" d="M809.6 869 H865.0 A6 6 0 0 1 877.0 869 H907.0 A6 6 0 0 1 919.0 869 H934.0 V315 H970.0 A6 6 0 0 1 982.0 315 H1260.0"/>
-  <path class="f" d="M1260.0 875 H1024.0 A6 6 0 0 0 1012.0 875 H1003.0 A6 6 0 0 0 991.0 875 H913.0 V633 H813.0"/>
-  <path class="f" d="M813.0 773 H871.0 V905 H1012.0 A6 6 0 0 1 1024.0 905 H1260.0"/>
-  <path class="f" d="M1260.0 935 H1039.0 V921 H1024.0 A6 6 0 0 0 1012.0 921 H809.6"/>
-  <path class="f" d="M813.0 1068 H1060.0 V965 H1260.0"/>
+  <path class="f fb" d="M240.0 298 H360.0 V195 H704.0"/>
+  <path class="f fb" d="M240.0 314 H420.0 V335 H704.0"/>
+  <path class="f fb" d="M240.0 330 H320.0 V455 H707.7"/>
+  <path class="f fb" d="M240.0 346 H300.0 V595 H334.0 A6 6 0 0 1 346.0 595 H707.7"/>
+  <path class="f" d="M240.0 362 H280.0 V735 H334.0 A6 6 0 0 1 346.0 735 H374.0 A6 6 0 0 1 386.0 735 H707.7"/>
+  <path class="f fb" d="M240.0 760 H340.0 V495 H707.7"/>
+  <path class="f fb" d="M240.0 780 H380.0 V635 H707.7"/>
+  <path class="f" d="M240.0 800 H440.0 V775 H707.7"/>
+  <path class="f fb" d="M240.0 820 H460.0 V895 H704.0"/>
+  <path class="f fb" d="M240.0 1050 H400.0 V1050 H704.0"/>
+  <path class="f" d="M816.0 195 H964.0 V550 H1260.0"/>
+  <path class="f" d="M1260.0 580 H932.0 A6 6 0 0 0 920.0 580 H850.0 V597 H813.0"/>
+  <path class="f" d="M813.0 737 H901.0 A6 6 0 0 1 913.0 737 H920.0 A6 6 0 0 1 932.0 737 H945.0 V610 H1260.0"/>
+  <path class="f fb" d="M816.0 895 H863.0 A6 6 0 0 1 875.0 895 H983.0 V640 H1260.0"/>
+  <path class="f" d="M1260.0 670 H1002.0 V1032 H813.0"/>
+  <path class="f fb" d="M816.0 475 H888.0 V285 H958.0 A6 6 0 0 1 970.0 285 H1260.0"/>
+  <path class="f fb" d="M809.6 869 H863.0 A6 6 0 0 1 875.0 869 H901.0 A6 6 0 0 1 913.0 869 H926.0 V315 H958.0 A6 6 0 0 1 970.0 315 H1260.0"/>
+  <path class="f" d="M1260.0 875 H1008.0 A6 6 0 0 0 996.0 875 H989.0 A6 6 0 0 0 977.0 875 H907.0 V633 H813.0"/>
+  <path class="f" d="M813.0 773 H869.0 V905 H996.0 A6 6 0 0 1 1008.0 905 H1260.0"/>
+  <path class="f" d="M1260.0 935 H1021.0 V921 H1008.0 A6 6 0 0 0 996.0 921 H809.6"/>
+  <path class="f" d="M813.0 1068 H1040.0 V965 H1260.0"/>
   
-  <text class="fl" x="536.4" y="190.0">URL ต้นฉบับ, วันหมดอายุ / Short URL</text>
-  <text class="fl" x="569.8" y="330.0">Short URL / รูป QR Code</text>
-  <text class="fl" x="516.1" y="450.0">ข้อมูลเข้าสู่ระบบ / Token</text>
-  <text class="fl" x="505.0" y="590.0">เงื่อนไขรายงาน / รายงานของตัวเอง</text>
-  <text class="fl" x="493.8" y="730.0">สถานะลิงก์ของตัวเอง</text>
-  <text class="fl" x="527.2" y="490.0">ข้อมูลเข้าสู่ระบบ / Token</text>
-  <text class="fl" x="549.4" y="630.0">เงื่อนไขรายงาน / รายงานทั้งระบบ</text>
-  <text class="fl" x="582.7" y="770.0">สถานะลิงก์ของทุกคน</text>
-  <text class="fl" x="592.0" y="890.0">ข้อมูลสิทธิ์ผู้ใช้ / รายชื่อผู้ใช้</text>
-  <text class="fl" x="558.7" y="1045.0">รหัสลิงก์สั้น / URL ปลายทาง</text>
-  <text class="fl" x="1118.0" y="545.0">ข้อมูลลิงก์ใหม่</text>
-  <text class="fl" x="1055.0" y="575.0">รายการลิงก์</text>
-  <text class="fl" x="1107.5" y="605.0">สถานะลิงก์</text>
-  <text class="fl" x="1128.5" y="635.0">จำนวนลิงก์ / ลิงก์ของผู้ใช้</text>
-  <text class="fl" x="1139.0" y="665.0">URL ต้นฉบับ, สถานะลิงก์</text>
-  <text class="fl" x="1076.0" y="280.0">ข้อมูลบัญชี / รหัสผ่าน hash</text>
-  <text class="fl" x="1097.0" y="310.0">รายชื่อผู้ใช้ / สิทธิ์, รหัสผ่านใหม่</text>
-  <text class="fl" x="1086.5" y="870.0">ข้อมูลการเปิด</text>
-  <text class="fl" x="1065.5" y="900.0">ข้อมูลการเปิดที่ลบ</text>
-  <text class="fl" x="1149.5" y="930.0">จำนวนการเปิด</text>
-  <text class="fl" x="1160.0" y="960.0">ข้อมูลการเปิด</text>
+  <text class="fl" x="474" y="190.0">URL ต้นฉบับ, วันหมดอายุ / Short URL</text>
+  <text class="fl" x="474" y="330.0">Short URL / รูป QR Code</text>
+  <text class="fl" x="474" y="450.0">ข้อมูลเข้าสู่ระบบ / Token</text>
+  <text class="fl" x="474" y="590.0">เงื่อนไขรายงาน / รายงานของตัวเอง</text>
+  <text class="fl" x="474" y="730.0">สถานะลิงก์ของตัวเอง</text>
+  <text class="fl" x="474" y="490.0">ข้อมูลเข้าสู่ระบบ / Token</text>
+  <text class="fl" x="474" y="630.0">เงื่อนไขรายงาน / รายงานทั้งระบบ</text>
+  <text class="fl" x="474" y="770.0">สถานะลิงก์ของทุกคน</text>
+  <text class="fl" x="474" y="890.0">ข้อมูลสิทธิ์ผู้ใช้ / รายชื่อผู้ใช้</text>
+  <text class="fl" x="474" y="1045.0">รหัสลิงก์สั้น / URL ปลายทาง</text>
+  <text class="fl" x="1054" y="545.0">ข้อมูลลิงก์ใหม่</text>
+  <text class="fl" x="1054" y="575.0">รายการลิงก์</text>
+  <text class="fl" x="1054" y="605.0">สถานะลิงก์</text>
+  <text class="fl" x="1054" y="635.0">จำนวนลิงก์ / ลิงก์ของผู้ใช้</text>
+  <text class="fl" x="1054" y="665.0">URL ต้นฉบับ, สถานะลิงก์</text>
+  <text class="fl" x="1054" y="280.0">ข้อมูลบัญชี / รหัสผ่าน hash</text>
+  <text class="fl" x="1054" y="310.0">รายชื่อผู้ใช้ / สิทธิ์, รหัสผ่านใหม่</text>
+  <text class="fl" x="1054" y="870.0">ข้อมูลการเปิด</text>
+  <text class="fl" x="1054" y="900.0">ข้อมูลการเปิดที่ลบ</text>
+  <text class="fl" x="1054" y="930.0">จำนวนการเปิด</text>
+  <text class="fl" x="1054" y="960.0">ข้อมูลการเปิด</text>
   
   <rect class="ext" x="40" y="285" width="200" height="90" rx="12" stroke="#38bdf8"/>
   <circle cx="72" cy="322" r="9" fill="#38bdf8"/>
