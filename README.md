@@ -122,6 +122,7 @@ flowchart LR
 
 Context Diagram, DFD Level 1, Workflow, ตารางข้อมูลเข้า-ออกของแต่ละกระบวนการ, Data Dictionary และ Normalization ดูได้ที่ [docs/design.md](docs/design.md)
 ภาพรวม Architecture + DFD + ER ในภาพเดียว: [docs/system-overview.svg](docs/system-overview.svg)
+DFD Level 0 + ER Diagram แบบ PDF (A4 แนวนอน 2 หน้า): [docs/short-url-dfd-er.pdf](docs/short-url-dfd-er.pdf)
 
 ## ER Diagram
 
